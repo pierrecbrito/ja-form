@@ -8,8 +8,7 @@
   animation: Pulo 1s  infinite;
 }
 
-
-.App-header {
+.App-fundo {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
