@@ -1,0 +1,25 @@
+input {
+    border: 2px solid #9F9FA7;
+    padding: 7px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+input:focus, input:active, input:focus-visible, input:focus-within, input:target {
+    border: 2px solid #00BF63 !important;
+    outline: #00BF63;
+}
+
+label {
+    font-weight: 600;
+    color: #000000;
+    font-size: 1rem;
+}
+
+.input-container {
+    text-align: left;
+}
