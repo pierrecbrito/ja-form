@@ -1,0 +1,19 @@
+.Connection-container {
+    padding: 15px 25px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.wifiOn, .wifiOff {
+    margin-right: 10px;
+    position: relative;
+    top: 4px;
+}
+
+.Connection-container:has(.wifiOn) {
+    color: #00BF63;
+}
+
+.Connection-container:has(.wifiOff) {
+    color: #9F9FA7;
+}

@@ -1,0 +1,12 @@
+.App {
+    background-color: #00BF63;
+    padding: 1.2em;
+}
+
+.App-fundo-dashboard {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    min-height: 100vh;
+    max-width: 1000px;
+    margin: 0 auto;
+}
