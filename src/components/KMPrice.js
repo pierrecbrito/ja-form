@@ -9,7 +9,7 @@ function KMPrice() {
 
   return (
     <div className='KMPrice'>
-        <Input type='number' name='Preço por Kilometro:'/>
+        <Input type='number' name='Preço por Kilometro: '/>
     </div>
   );
 }
