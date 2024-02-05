@@ -1,7 +1,7 @@
 .Connection-container {
-    padding: 15px 25px;
     text-align: left;
     font-weight: 700;
+    width: fit-content;
 }
 
 .wifiOn, .wifiOff {

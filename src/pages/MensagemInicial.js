@@ -1,14 +1,13 @@
-import logo from '../JA.png';
 import '../css/Dashboard.css';
 import '../css/Suite.css';
 import Button from '../components/Button';
-import Input from '../components/Input';
+import $ from 'jquery'
+import Dashboard from './Dashboard';
 import Connection from '../components/Connection';
 import Hamburger from '../menu.svg'
 import Menu from '../components/Menu';
-import $ from 'jquery'
 
-function Dashboard() {
+function MensagemInicial() {
 
   const openMenu = () => {
     $('.menu').animate({right: 0})
@@ -24,9 +23,13 @@ function Dashboard() {
 
           <Menu/>
 
+            <h2 className="mensagem">Seja bem-vindo ao sistema da JA.</h2>
+            <p className="sub-mensagem">Por aqui, você pode registrar documentos importantes para controle.</p>
+            <Button text="Abrir menu" onClick={openMenu}/>
+
       </main>
     </div>
   );
 }
 
-export default Dashboard;
+export default MensagemInicial;

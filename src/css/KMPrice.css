@@ -1,0 +1,8 @@
+.KMPrice input {
+    max-width: 85px !important;
+    display: inline;
+}
+
+label {
+    display: block;
+}

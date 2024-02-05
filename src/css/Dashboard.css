@@ -1,6 +1,6 @@
 .App {
     background-color: #00BF63;
-    padding: 1.2em;
+    padding: 0.7em;
 }
 
 .App-fundo-dashboard {
@@ -9,4 +9,26 @@
     min-height: 100vh;
     max-width: 1000px;
     margin: 0 auto;
+    padding: 2em;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.mensagem {
+    margin-top: 4em;
+}
+
+.sub-mensagem {
+    color: #9F9FA7;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hamburger {
+    cursor: pointer;
 }

@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SlideRoutes from 'react-slide-routes';
 import Dashboard from './pages/Dashboard';
+import Controle from './pages/Controle';
+import MensagemInicial from './pages/MensagemInicial';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +16,8 @@ root.render(
         <Route path="/" element={<Inicial />}/>
         <Route path='login' element={<Login />} />
         <Route path='dashboard' element={<Dashboard />} />
+        <Route path='inicio' element={<MensagemInicial />} />
+        <Route path='controle' element={<Controle />} />
     </SlideRoutes>
   </BrowserRouter>
 );

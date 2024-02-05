@@ -1,0 +1,39 @@
+import '../css/Menu.css';
+import Close from '../x-square.svg'
+import $ from 'jquery'
+import LogoMenu from '../JA.png'
+import { NavLink } from 'react-router-dom';
+
+function Menu({type, name}) {
+
+    const closeMenu = () => {
+        $('.menu').animate({right: -$('.menu').width()-100})
+    }
+
+    return (
+        <nav class="menu">
+            <img src={Close} className="close-menu" onClick={closeMenu}/>
+
+            <img src={LogoMenu} className="logo-menu" />
+
+            <NavLink className="item-menu"  to="../inicio/">
+                Página Inicial
+            </NavLink>
+
+            <NavLink className="item-menu"  to="../dashboard/">
+                Formulário
+            </NavLink>
+
+            <NavLink className="item-menu"  to="../dashboard/">
+                Relatório
+            </NavLink>
+
+            <NavLink className="item-menu"  to="../controle/">
+                Controle
+            </NavLink>
+            
+        </nav>
+    );
+}
+
+export default Menu;

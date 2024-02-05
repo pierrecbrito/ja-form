@@ -1,0 +1,41 @@
+.menu {
+    height: 100%;
+    z-index: 100;
+    box-shadow: -2px 0px 2px 1px #9F9FA7;;
+    max-width: 100%;
+    min-width: 380px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    padding: 3em 1.5em;
+    right: -1000px;
+}
+
+.close-menu {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+.logo-menu {
+    width: 30%;
+}
+
+.item-menu {
+    display: block;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    text-decoration: none;
+    color: #000000;
+    font-weight: 600;
+    transition: 1s;
+    border-bottom: 1px solid #9F9FA7;
+    text-align: left;
+}
+
+.item-menu:hover {
+    color: #00BF63;
+}

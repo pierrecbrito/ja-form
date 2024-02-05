@@ -15,7 +15,7 @@ function Login() {
                 <Input type="text" name="Login" />
                 <Input type="password" name="Senha" />
 
-                <div class="container-button"><Button texto="Entrar"/></div>
+                <div class="container-button"><Button text="Entrar"/></div>
 
                 <div class="copyright-container">
                     <span>&copy; JA 2024</span>
