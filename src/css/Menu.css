@@ -39,3 +39,7 @@
 .item-menu:hover {
     color: #00BF63;
 }
+
+.item-menu.sair {
+    color: red;
+}

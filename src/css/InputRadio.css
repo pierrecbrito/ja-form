@@ -7,7 +7,6 @@ input {
     width: 100%;
     box-sizing: border-box;
     font-size: 1rem;
-    display: block;
 }
 
 input:focus, input:active, input:focus-visible, input:focus-within, input:target {
@@ -24,4 +23,15 @@ label {
 .input-container {
     text-align: left;
     margin-top: 10px;
+}
+
+.input-container:has(input[type="checkbox"]) {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+} 
+
+.input-container:has(input[type="checkbox"]) label, .input-container:has(input[type="checkbox"]) input {
+    width: fit-content;
+    display: inline-block;
 }

@@ -1,5 +1,6 @@
 import '../css/Dashboard.css';
 import '../css/Suite.css';
+import '../css/Controle.css'
 import Button from '../components/Button';
 import Connection from '../components/Connection';
 import Hamburger from '../menu.svg'
@@ -13,7 +14,7 @@ import KMPrice from '../components/KMPrice';
 function Controle() {
 
   const openMenu = () => {
-    $('.menu').animate({right: 0})
+    $('.menu').animate({right: 0})  
   }
 
   return (
@@ -27,6 +28,10 @@ function Controle() {
         <Menu/>
 
         <h3 className="mensage">Controle</h3>
+        
+        <div className='container-add-button'>
+          <Button text="Adicionar produto"/>
+        </div>
 
         <Card titulo="Produtos" body={<TableProdutos/>}/>
 

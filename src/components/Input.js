@@ -1,10 +1,10 @@
 import '../css/Input.css';
 
-function Input({type, name}) {
+function Input({type, name, value}) {
   return (
     <div class="input-container">
         <label>{name}</label>
-        <input type={type}></input>
+        <input type={type} value={value}></input>
     </div>
   );
 }

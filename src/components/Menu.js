@@ -20,7 +20,7 @@ function Menu({type, name}) {
                 Página Inicial
             </NavLink>
 
-            <NavLink className="item-menu"  to="../dashboard/">
+            <NavLink className="item-menu"  to="../formulario/">
                 Formulário
             </NavLink>
 
@@ -30,6 +30,10 @@ function Menu({type, name}) {
 
             <NavLink className="item-menu"  to="../controle/">
                 Controle
+            </NavLink>
+
+            <NavLink className="item-menu sair"  to="../login/">
+                Sair
             </NavLink>
             
         </nav>
