@@ -1,8 +1,13 @@
+.KMPrice {
+    text-align: left;
+    margin-top: 10px;
+}
+
 .KMPrice input {
     max-width: 85px !important;
     display: inline;
 }
 
-label {
+.KMPrice label {
     display: block;
 }

@@ -1,0 +1,14 @@
+.valor-container {
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 1em;
+    width: 100%;
+}
+
+#valor-secao {
+    background: rgba(0, 99, 65, 0.3);
+    padding: 10px 50px;
+    border-radius: 25rem;
+    font-weight: bold;
+}

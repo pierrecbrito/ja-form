@@ -12,30 +12,174 @@ import SelectSection from '../components/SelectSection';
 import ListaDeProduto from '../components/ListaDeProduto';
 import InputRadio from '../components/InputRadio';
 import React from 'react';
-
+import Button from '../components/Button'
+import Documentos from '../data/Documentos';
+import ListaDeParceiros from '../components/ListaDeParceiros';
+import ValorSecao from '../components/ValorSecao';
+import Configuracao from '../data/Configuracoes';
+import Produtos from '../data/Produtos';
+import toast, { Toaster } from 'react-hot-toast';
 
 class Formulario extends React.Component {
 
     constructor(props) {
         super(props);
-       
-    }
 
-    openMenu = () => {
-        $('.menu').animate({right: 0})
+        this.openMenu = () => {
+            $('.menu').animate({right: 0})
+        }
+
+        this.state = {
+            nome: '',
+            cnpj: '',
+            cpf: '',
+            endereco: '',
+            cep: '',
+            cidade: '',
+            telefone: '',
+            maquinaMontagem: '',
+            quantLinhasMontagem: 0,
+            numeroMaquinaMontagem: '',
+            maquinaNovaMontagem: false,
+            faturadoRevendaMontagem: '',
+            produto: '',
+            servicosExecutadosMontagem: '',
+            testeRealizadosMontagem: '',
+            parceiros: '',
+            notaFiscal: '',
+            maquinaPV: '',
+            quantLinhasPV: 0,
+            numeroMaquinaPV: '',
+            maquinaNovaPV: false,
+            faturadoRevendaPV: '',
+            produtoPV: '',
+            servicosExecutadosPV: '',
+            testeRealizadosPV: '',
+            distancia: 0,
+            horasTrabalhadas: 0, 
+            valorDoKM: 0,
+            valorDaHora: 0,
+            produtos: []
+        }
+
+        this.submit = () => {
+           
+            const documentosDB = new Documentos()
+
+            const novoDocumento = {...this.state, 
+                totalInstalacao: this.getValorTotalInstalacao(),
+                totalPV: this.getValorTotalPV(),
+                totalDistancia: this.getValorTotalDistancia(),
+                totalHorasTrabalhadas: this.getValorTotalHorasTrabalhadas(),
+                totalDocumento: this.getValorTotal(),
+                comissao: this.getComissao(),
+                valorProdutoPV: this.getValorPVDe(this.state.produtoPV),
+                valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
+            }
+            console.log(novoDocumento)
+
+            documentosDB.salvarDocumento(novoDocumento)
+                .then((result) => {
+                    console.log(result)
+
+                    if(result.$id != undefined) {
+                         this.notificarDocumentoEnviado()
+                    }
+                })
+               
+           
+        }
+
     }
 
     componentDidMount() {
-        $(`#secao-executado`).hide()
-        $(`#secao-pos-venda`).hide()
-        $(`#secao-kms`).hide()
+        $(`#secao-instalacao`).slideUp(3)
+        $(`#secao-pos-venda`).slideUp(3)
+        $(`#secao-kms`).slideUp(3)
+        $(`#secao-horas`).slideUp(3)
+
+        let configuracaoDB = new Configuracao()
+        configuracaoDB.getValorDoKM().then(valor => this.setState({valorDoKM: valor}))
+        configuracaoDB.getValorDaHora().then(valor => this.setState({valorDaHora: valor}))
+        new Produtos().listarProdutos().then(produtos => this.setState({produtos: produtos}))
     }
+
+    getValorMontagemDe(produtoDescricao) {
+        if(this.state.produtos.length != 0 && produtoDescricao != ''){
+            console.log(this.state.produtos, produtoDescricao)
+            return this.state.produtos.filter(p => p.descricao == produtoDescricao)[0].valorMontagem
+        } else
+            return 0
+    }
+
+    getValorPVDe(produtoDescricao) {
+        if(this.state.produtos.length != 0 && produtoDescricao != ''){
+            console.log(this.state.produtos, produtoDescricao)
+            return this.state.produtos.filter(p => p.descricao == produtoDescricao)[0].valorPV
+        } else
+            return 0
+    }
+
+    getValorTotalDistancia() {
+        const distancia = this.state.distancia * this.state.valorDoKM
+        return distancia
+    }
+
+    getValorTotalHorasTrabalhadas() {
+        const horas = this.state.horasTrabalhadas * this.state.valorDaHora
+        return horas
+    }
+
+    getValorTotalInstalacao() {
+        const instalacao = this.getValorMontagemDe(this.state.produto) * this.state.quantLinhasMontagem
+        return instalacao
+    }
+
+    getValorTotalPV() {
+        const pv = this.getValorPVDe(this.state.produtoPV) * this.state.quantLinhasPV
+        return pv
+    }
+
+    getValorTotal() {
+        const instalacao = this.getValorMontagemDe(this.state.produto) * this.state.quantLinhasMontagem
+        const pv = this.getValorPVDe(this.state.produtoPV) * this.state.quantLinhasPV
+        const distancia = this.state.distancia * this.state.valorDoKM
+        const horas = this.state.horasTrabalhadas * this.state.valorDaHora
+        return instalacao + pv + distancia + horas
+    }
+
+    getComissao() {
+        const horas = this.state.horasTrabalhadas * this.state.valorDaHora
+        return 0.10 * horas
+    }
+
+    notificarDocumentoEnviado(){
+        toast('Documento enviado!', {
+            duration: 5000,
+            position: 'bottom-center',
+          
+            // Styling
+            style: {
+                boxShadow: '0 1rem 3rem rgba(0,0,0,.175) !important'
+            },
+            className: '',
+          
+            // Custom Icon
+            icon: '✅',
+          
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: '#000',
+              secondary: '#fff',
+            },
+        });
+    } 
 
     render() {
       return (
         <div className="App">
         <main className="App-fundo-dashboard">
-                <header class="cabecalho">
+            <header class="cabecalho">
                 <Connection/>
                 <img src={Hamburger} className="hamburger" alt="Botão de menu" onClick={this.openMenu} />
             </header>
@@ -44,52 +188,78 @@ class Formulario extends React.Component {
 
             <h3 className="mensage">Formulário</h3>
             <div className='formulario-documento'>
-                <Input type='text' name='Nome'/>
-                <InputComMascara name="CNPJ" mask="99.999.999/9999-99"/>
-                <InputComMascara name="CPF" mask="999.999.999-99"/>
-                <Input type='text' name='Endereço'/>
-                <InputComMascara name="CEP" mask="99999-999"/>
-                <Input type='text' name='Cidade'/>
-                <InputComMascara name="Telefone" mask="(99) 99999-9999"/>
+                <Input type='text' name='Nome' value={this.state.nome} onChange={(e) => this.setState({nome: e.target.value})}/>
+                <InputComMascara name="CNPJ" mask="99.999.999/9999-99" value={this.state.cnpj} onChange={(e) => this.setState({cnpj: e.target.value})}/>
+                <InputComMascara name="CPF" mask="999.999.999-99" value={this.state.cpf} onChange={(e) => this.setState({cpf: e.target.value})}/>
+                <Input type='text' name='Endereço' value={this.state.endereco} onChange={(e) => this.setState({endereco: e.target.value})}/>
+                <InputComMascara name="CEP" mask="99999-999" value={this.state.cep} onChange={(e) => this.setState({cep: e.target.value})}/>
+                <Input type='text' name='Cidade' value={this.state.cidade} onChange={(e) => this.setState({cidade: e.target.value})}/>
+                <InputComMascara name="Telefone" mask="(99) 99999-9999" value={this.state.telefone} onChange={(e) => this.setState({telefone: e.target.value})}/>
 
                 <div style={{display: 'block', width: '100%'}}>
-                    <SelectSection idSecao='secao-executado' nomeSecao='Executado'/>
+                    <SelectSection idSecao='secao-instalacao' nomeSecao='Instalação'/>
                     <SelectSection idSecao='secao-pos-venda' nomeSecao='Pós-Venda'/>
                     <SelectSection idSecao='secao-kms' nomeSecao='Distância'/>
+                    <SelectSection idSecao='secao-horas' nomeSecao='Horas trabalhadas'/>
                 </div>
 
-                <div id='secao-executado'>
-                    <h3 style={{width: "100%"}}>Executado</h3>
-                    <Input type='text' name='Máquina'/>
-                    <Input type='number' name='Quantidade de linha'/>
-                    <Input type='number' name='Número de máquina'/>
-                    <InputRadio name="É Máquina nova" id="maquina-nova" value="Máquina nova"/>
-                    <Input type='text' name='Faturado pela revenda'/>
-                    <ListaDeProduto name="Produtos"/>
-                    <Input type='text' name='Serviços executados'/>
-                    <Input type='text' name='Testes realizados'/>
+                <div id='secao-instalacao'>
+                    <h3 style={{width: "100%"}}>Instalação</h3>
+                    <Input type='text' name='Máquina' value={this.state.maquinaMontagem} onChange={(e) => this.setState({maquinaMontagem: e.target.value})}/>
+                    <Input type='number' name='Quantidade de linha' value={this.state.quantLinhasMontagem} onChange={(e) => this.setState({quantLinhasMontagem: e.target.value})}/>
+                    <Input type='number' name='Número de máquina' value={this.state.numeroMaquinaMontagem} onChange={(e) => this.setState({numeroMaquinaMontagem: e.target.value})}/>
+                    <InputRadio name="É Máquina nova" id="maquina-nova" checked={this.state.maquinaNovaMontagem} onChange={(e) => this.setState({maquinaNovaMontagem: e.target.checked})}/>
+                    <Input type='text' name='Faturado pela revenda' value={this.state.faturadoRevendaMontagem} onChange={(e) => this.setState({faturadoRevendaMontagem: e.target.value})}/>
+                    <ListaDeProduto name="Produtos"  value={this.state.produto} onChange={(e) => this.setState({produto: e.value})}/>
+                    <Input type='text' name='Serviços executados'  value={this.state.servicosExecutadosMontagem} onChange={(e) => this.setState({servicosExecutadosMontagem: e.target.value})}/>
+                    <Input type='text' name='Testes realizados' value={this.state.testeRealizadosMontagem} onChange={(e) => this.setState({testeRealizadosMontagem: e.target.value})}/>
+                    <ListaDeParceiros name="Parceiros" value={this.state.produto} onChange={(e) => this.setState({parceiros: e.value})}/>
+                    <Input type='text' name='Nota Fiscal' value={this.state.notaFiscal} onChange={(e) => this.setState({notaFiscal: e.target.value})}/>
+                    <ValorSecao valor={this.getValorTotalInstalacao()}/>
                 </div>
 
                 <div id='secao-pos-venda'>
                     <h3 style={{width: "100%"}}>Pós-venda</h3>
-                    <Input type='text' name='Máquina'/>
-                    <Input type='number' name='Quantidade de linha'/>
-                    <Input type='number' name='Número de máquina'/>
-                    <InputRadio name="É Máquina nova" id="maquina-nova" value="Máquina nova"/>
-                    <Input type='text' name='Faturado pela revenda'/>
-                    <ListaDeProduto name="Produtos"/>
-                    <Input type='text' name='Serviços executados'/>
-                    <Input type='text' name='Testes realizados'/>
+                    <Input type='text' name='Máquina' value={this.state.maquinaPV} onChange={(e) => this.setState({maquinaPV: e.target.value})}/>
+                    <Input type='number' name='Quantidade de linha' value={this.state.quantLinhasPV} onChange={(e) => this.setState({quantLinhasPV: e.target.value})}/>
+                    <Input type='number' name='Número de máquina'  value={this.state.numeroMaquinaPV} onChange={(e) => this.setState({numeroMaquinaPV: e.target.value})}/>
+                    <InputRadio name="É Máquina nova" id="maquina-nova" value="Máquina nova" checked={this.state.maquinaNovaPV} onChange={(e) => this.setState({maquinaNovaPV: e.target.checked})}/>
+                    <Input type='text' name='Faturado pela revenda'  value={this.state.faturadoRevendaPV} onChange={(e) => this.setState({faturadoRevendaPV: e.target.value})}/>
+                    <ListaDeProduto name="Produtos" value={this.state.produtoPV} onChange={(e) => this.setState({produtoPV: e.value})}/>
+                    <Input type='text' name='Serviços executados' value={this.state.servicosExecutadosPV} onChange={(e) => this.setState({servicosExecutadosPV: e.target.value})}/>
+                    <Input type='text' name='Testes realizados' value={this.state.testeRealizadosPV} onChange={(e) => this.setState({testeRealizadosPV: e.target.value})}/>
+                    <ValorSecao valor={this.getValorTotalPV()}/>
                 </div>
 
                 <div id='secao-kms'>
                     <h3 style={{width: "100%"}}>Kilometros percorridos</h3>
-                    <Input name="DistÂncia percorrida (KM):" type="number"/>
+                    <Input name="Distância percorrida (KM):" type="number" value={this.state.distancia} onChange={(e) => this.setState({distancia: e.target.value})}/>
+                    <ValorSecao valor={this.getValorTotalDistancia()}/>
                 </div>
+
+                <div id='secao-horas'>
+                    <h3 style={{width: "100%"}}>Horas trabalhadas</h3>
+                    <Input name="Horas implementadas:" type="number" value={this.state.horasTrabalhadas} onChange={(e) => this.setState({horasTrabalhadas: e.target.value})}/>
+                    <ValorSecao valor={this.getValorTotalHorasTrabalhadas()}/>
+                </div>
+
+                <div id='secao-total'>
+                    <span>Total do documento:  </span>
+                    <ValorSecao valor={this.getValorTotal()}/>
+                </div>
+                <div id='secao-total'>
+                    <span>Comissão:  </span>
+                    <ValorSecao valor={this.getComissao()}/>
+                </div>
+
+                <Button text="Enviar" onClick={this.submit}/>
+
+                <Toaster />
             </div>
 
         </main>
         </div>
+        
       )
     }
   }

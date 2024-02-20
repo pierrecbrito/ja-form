@@ -1,5 +1,5 @@
 .App {
-    background-color: #00BF63;
+    background-color: #006341;
     padding: 0.7em;
 }
 
@@ -11,7 +11,7 @@
     margin: 0 auto;
     padding: 2em;
     position: relative;
-    z-index: 10;
+    z-index: 0;
     overflow: hidden;
 }
 

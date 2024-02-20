@@ -1,0 +1,29 @@
+.row {
+    width: 100%;
+}
+
+.col {
+    width: 45%;
+}
+
+.filtros {
+    text-align: left;
+}
+
+.filtro-intervalo .input-container {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.filtros .input-container {
+    margin-left: 10px;
+}
+
+.filtro-intervalo .input-container, .filtro-numeros .input-container {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    min-width: 240px;
+}
+

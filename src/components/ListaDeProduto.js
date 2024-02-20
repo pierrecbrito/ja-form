@@ -1,24 +1,33 @@
 import '../css/Input.css';
+import AsyncSelect from 'react-select/async'
 import Select from 'react-select'
-import makeAnimated from 'react-select/animated';
+import Produtos from '../data/Produtos'
+import React, { useEffect, useState } from 'react';
 
-const animatedComponents = makeAnimated();
+class ListaDeProduto extends React.Component {
 
-function ListaDeProduto({name}) {
+    constructor(props) {
+        super(props);
+        this.state = {
+            promiseOptions: () => new Promise((resolve) => {
+                new Produtos().listarProdutos()
+                    .then(produtos => {
+                        let options = produtos.map(produto => {return {value: produto.descricao, label: produto.descricao}})
+                        resolve(options)
+                    })})
+        };
 
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-      ]
-      
+    }   
+
+    render() {
+        return (
+            <div class="input-container">
+                <label>{this.props.name}</label>
+                <AsyncSelect cacheOptions defaultOptions loadOptions={this.state.promiseOptions} onChange={this.props.onChange}/>
+            </div>
+        );
+    } 
     
-    return (
-        <div class="input-container">
-            <label>{name}</label>
-            <Select options={options} components={animatedComponents} isMulti/>
-        </div>
-    );
 }
 
 export default ListaDeProduto;

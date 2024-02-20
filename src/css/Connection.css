@@ -11,7 +11,7 @@
 }
 
 .Connection-container:has(.wifiOn) {
-    color: #00BF63;
+    color: #006341;
 }
 
 .Connection-container:has(.wifiOff) {

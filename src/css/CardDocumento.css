@@ -1,0 +1,37 @@
+#secoes-container {
+    
+}
+
+.info {
+    width: 48%;
+    margin-top: 10px;
+}
+
+.secao-body {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+
+/*#secao-total {
+    justify-content: end;
+    align-items: center;
+    margin-top: 1.5em;
+}
+
+#secao-total .valor-container {
+    text-align: right;
+    width: fit-content;
+    margin-top: 0;
+    margin-left: 1em;
+}*/
+
+@media only screen and (max-width: 600px) {
+    #secoes-container .info {
+        width: 98%;
+        margin-right: 0;
+    }
+}

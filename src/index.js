@@ -1,24 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Inicial from './pages/Inicial';
-import Login from './pages/Login';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import SlideRoutes from 'react-slide-routes';
-import Dashboard from './pages/Dashboard';
 import Controle from './pages/Controle';
 import MensagemInicial from './pages/MensagemInicial';
 import Formulario from './pages/Formulario';
+import Relatorio from './pages/Relatorio';
+import { Client } from 'appwrite';
+
+const client = new Client();
+client
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject('65c4d9d1a09d06e65a7d');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <SlideRoutes duration={600}>
-        <Route path="/" element={<Inicial />}/>
-        <Route path='login' element={<Login />} />
+        <Route path="/" element={<MensagemInicial />}/>
+        <Route path='login' element={<MensagemInicial />} />
         <Route path='inicio' element={<MensagemInicial />} />
         <Route path='controle' element={<Controle />} />
         <Route path='formulario' element={<Formulario />} />
+        <Route path='relatorio' element={<Relatorio />} />
     </SlideRoutes>
   </BrowserRouter>
 );

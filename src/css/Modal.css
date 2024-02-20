@@ -1,0 +1,25 @@
+.ReactModal__Content {
+    padding: 0 !important;
+    width: 100%;
+    max-width: 480px;
+}
+
+.cabecalho_modal {
+    padding: 15px;
+    background-color: #006341;
+    color: #FFFFFF;
+    font-weight: 700;
+    position: relative;
+}
+
+.body_modal {
+    padding: 15px;
+}
+
+.btn-fechar-modal {
+    font-weight: bold;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
+}

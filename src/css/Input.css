@@ -11,8 +11,8 @@ input {
 }
 
 input:focus, input:active, input:focus-visible, input:focus-within, input:target {
-    border: 2px solid #00BF63 !important;
-    outline: #00BF63;
+    border: 2px solid #006341  !important;
+    outline: #006341;
 }
 
 label {

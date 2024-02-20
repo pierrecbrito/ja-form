@@ -24,7 +24,7 @@ function Menu({type, name}) {
                 Formulário
             </NavLink>
 
-            <NavLink className="item-menu"  to="../dashboard/">
+            <NavLink className="item-menu"  to="../relatorio/">
                 Relatório
             </NavLink>
 

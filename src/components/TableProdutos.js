@@ -1,32 +1,42 @@
 import '../css/Table.css';
 import '../css/Suite.css';
 import $ from 'jquery'
+import Produtos from '../data/Produtos';
+import { useState, useEffect } from 'react';
 
+function TableProdutos({atualizarTabela, setAtualizarTabela}) {
+  const [produtos, setProdutos] = useState('Carregando...')
 
-
-function TableProdutos() {
-
-  const openMenu = () => {
-    $('.menu').animate({right: 0})
+  const atualizar = () => {
+    const produtosDB = new Produtos()
+    produtosDB.listarProdutos().then((response) => {
+        setProdutos(
+          response.map((produto) =>   //Constrói uma linha de tabela para cada produto no banco
+            <tr className='linha'>
+              <td>{produto.descricao}</td>
+              <td>R$ {produto.valorMontagem} </td>
+              <td>R$ {produto.valorPV}</td>
+            </tr>
+        ))
+    })
   }
+
+  useEffect(() => {
+    atualizar()
+  }, []);
+
 
   return (
     <table className='tabela'>
       <thead className='tabela-cabecalho'>
         <tr>
-          <th>#</th>
           <th>Produto</th>
           <th>Valor normal</th>
           <th>Valor de PV</th>
         </tr>
       </thead>
       <tbody>
-        <tr className='linha'>
-          <td>1</td>
-          <td>Montagem de infográfico</td>
-          <td>R$ 250,00</td>
-          <td>R$ 350,00</td>
-        </tr>
+        {produtos}
       </tbody>
     </table>
   );

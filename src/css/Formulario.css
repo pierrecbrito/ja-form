@@ -1,4 +1,4 @@
-.formulario-documento, #secao-executado, #secao-pos-venda, #secao-kms  {
+.formulario-documento, #secao-instalacao, #secao-pos-venda, #secao-kms, #secao-horas, #secao-total  {
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -11,8 +11,21 @@
     margin-right: 10PX;
 }
 
-#secao-executado, #secao-pos-venda, #secao-kms {
+#secao-instalacao, #secao-pos-venda, #secao-kms, #secao-horas, #secao-total {
     width: 100%;
+}
+
+#secao-total {
+    justify-content: end;
+    align-items: center;
+    margin-top: 1.5em;
+}
+
+#secao-total .valor-container {
+    text-align: right;
+    width: fit-content;
+    margin-top: 0;
+    margin-left: 1em;
 }
 
 @media only screen and (max-width: 600px) {

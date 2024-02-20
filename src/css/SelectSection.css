@@ -6,13 +6,13 @@
 
 .btn-secao.ativado {
     border: 1px solid #9F9FA7;
-    background-color: #00BF63;
+    background-color: #006341;
     color: #FFFFFF;
     font-weight: 600;
 }
 
 .btn-secao.nativado {
-    border: 1px solid #00BF63;
+    border: 1px solid #006341;
     background-color: #FFFFFF;
     color: #000000;
     font-weight: 600;
