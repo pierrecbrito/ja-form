@@ -1,4 +1,4 @@
-.formulario-documento, #secao-instalacao, #secao-pos-venda, #secao-kms, #secao-horas, #secao-total  {
+.formulario-documento, #secao-instalacao, #secao-pos-venda, #secao-adicionais, #secao-total  {
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -11,7 +11,7 @@
     margin-right: 10PX;
 }
 
-#secao-instalacao, #secao-pos-venda, #secao-kms, #secao-horas, #secao-total {
+#secao-instalacao, #secao-pos-venda, #secao-adicionais, #secao-total {
     width: 100%;
 }
 

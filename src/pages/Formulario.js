@@ -77,7 +77,7 @@ class Formulario extends React.Component {
                 valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
             }
             console.log(novoDocumento)
-
+            /*
             documentosDB.salvarDocumento(novoDocumento)
                 .then((result) => {
                     console.log(result)
@@ -85,7 +85,7 @@ class Formulario extends React.Component {
                     if(result.$id != undefined) {
                          this.notificarDocumentoEnviado()
                     }
-                })
+                })*/
                
            
         }
@@ -95,8 +95,7 @@ class Formulario extends React.Component {
     componentDidMount() {
         $(`#secao-instalacao`).slideUp(3)
         $(`#secao-pos-venda`).slideUp(3)
-        $(`#secao-kms`).slideUp(3)
-        $(`#secao-horas`).slideUp(3)
+        $(`#secao-adicionais`).slideUp(3)
 
         let configuracaoDB = new Configuracao()
         configuracaoDB.getValorDoKM().then(valor => this.setState({valorDoKM: valor}))
@@ -150,7 +149,8 @@ class Formulario extends React.Component {
 
     getComissao() {
         const horas = this.state.horasTrabalhadas * this.state.valorDaHora
-        return 0.10 * horas
+        const distancia = this.state.distancia * this.state.valorDoKM
+        return 0.10 * (horas + distancia)
     }
 
     notificarDocumentoEnviado(){
@@ -199,8 +199,7 @@ class Formulario extends React.Component {
                 <div style={{display: 'block', width: '100%'}}>
                     <SelectSection idSecao='secao-instalacao' nomeSecao='Instalação'/>
                     <SelectSection idSecao='secao-pos-venda' nomeSecao='Pós-Venda'/>
-                    <SelectSection idSecao='secao-kms' nomeSecao='Distância'/>
-                    <SelectSection idSecao='secao-horas' nomeSecao='Horas trabalhadas'/>
+                    <SelectSection idSecao='secao-adicionais' nomeSecao='Informações adicionais'/>
                 </div>
 
                 <div id='secao-instalacao'>
@@ -213,7 +212,7 @@ class Formulario extends React.Component {
                     <ListaDeProduto name="Produtos"  value={this.state.produto} onChange={(e) => this.setState({produto: e.value})}/>
                     <Input type='text' name='Serviços executados'  value={this.state.servicosExecutadosMontagem} onChange={(e) => this.setState({servicosExecutadosMontagem: e.target.value})}/>
                     <Input type='text' name='Testes realizados' value={this.state.testeRealizadosMontagem} onChange={(e) => this.setState({testeRealizadosMontagem: e.target.value})}/>
-                    <ListaDeParceiros name="Parceiros" value={this.state.produto} onChange={(e) => this.setState({parceiros: e.value})}/>
+                    <ListaDeParceiros name="Parceiros" value={this.state.parceiros} onChange={(e) => this.setState({parceiros: e.map(p => p.value)})}/>
                     <Input type='text' name='Nota Fiscal' value={this.state.notaFiscal} onChange={(e) => this.setState({notaFiscal: e.target.value})}/>
                     <ValorSecao valor={this.getValorTotalInstalacao()}/>
                 </div>
@@ -231,17 +230,14 @@ class Formulario extends React.Component {
                     <ValorSecao valor={this.getValorTotalPV()}/>
                 </div>
 
-                <div id='secao-kms'>
-                    <h3 style={{width: "100%"}}>Kilometros percorridos</h3>
+                <div id='secao-adicionais'>
+                    <h3 style={{width: "100%"}}>Informações adicionais</h3>
                     <Input name="Distância percorrida (KM):" type="number" value={this.state.distancia} onChange={(e) => this.setState({distancia: e.target.value})}/>
-                    <ValorSecao valor={this.getValorTotalDistancia()}/>
+
+                    <Input name="Horas implementadas:" type="number" value={this.state.horasTrabalhadas} onChange={(e) => this.setState({horasTrabalhadas: e.target.value})}/>
+                    <ValorSecao valor={this.getValorTotalHorasTrabalhadas() + this.getValorTotalDistancia()}/>
                 </div>
 
-                <div id='secao-horas'>
-                    <h3 style={{width: "100%"}}>Horas trabalhadas</h3>
-                    <Input name="Horas implementadas:" type="number" value={this.state.horasTrabalhadas} onChange={(e) => this.setState({horasTrabalhadas: e.target.value})}/>
-                    <ValorSecao valor={this.getValorTotalHorasTrabalhadas()}/>
-                </div>
 
                 <div id='secao-total'>
                     <span>Total do documento:  </span>

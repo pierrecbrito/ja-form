@@ -14,7 +14,7 @@ function ListaDeParceiros({name, value, onChange}) {
     return (
         <div class="input-container">
             <label>{name}</label>
-            <Select options={options} onChange={onChange}/>
+            <Select options={options} onChange={onChange} isMulti/>
         </div>
     );
 }
