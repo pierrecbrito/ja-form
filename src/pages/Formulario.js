@@ -62,31 +62,33 @@ class Formulario extends React.Component {
             produtos: []
         }
 
-        this.submit = () => {
-           
+        this.submit = () => {     
             const documentosDB = new Documentos()
+           
 
-            const novoDocumento = {...this.state, 
-                totalInstalacao: this.getValorTotalInstalacao(),
-                totalPV: this.getValorTotalPV(),
-                totalDistancia: this.getValorTotalDistancia(),
-                totalHorasTrabalhadas: this.getValorTotalHorasTrabalhadas(),
-                totalDocumento: this.getValorTotal(),
-                comissao: this.getComissao(),
-                valorProdutoPV: this.getValorPVDe(this.state.produtoPV),
-                valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
-            }
-            console.log(novoDocumento)
-            /*
-            documentosDB.salvarDocumento(novoDocumento)
-                .then((result) => {
-                    console.log(result)
+                const novoDocumento = {...this.state, 
+                    totalInstalacao: this.getValorTotalInstalacao(),
+                    totalPV: this.getValorTotalPV(),
+                    totalDistancia: this.getValorTotalDistancia(),
+                    totalHorasTrabalhadas: this.getValorTotalHorasTrabalhadas(),
+                    totalDocumento: this.getValorTotal(),
+                    comissao: (this.getComissao()/this.state.parceiros.length).toFixed(2),
+                    valorProdutoPV: this.getValorPVDe(this.state.produtoPV),
+                    valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
+                    parceiros: this.state.parceiros.join(','),
+                }
 
-                    if(result.$id != undefined) {
-                         this.notificarDocumentoEnviado()
-                    }
-                })*/
-               
+                console.log('Novo Documento', novoDocumento)
+
+                documentosDB.salvarDocumento(novoDocumento)
+                    .then((result) => {
+                        console.log(result)
+
+                        if(result) {
+                            this.notificarDocumentoEnviado()
+                        }
+                    })
+
            
         }
 
@@ -212,7 +214,7 @@ class Formulario extends React.Component {
                     <ListaDeProduto name="Produtos"  value={this.state.produto} onChange={(e) => this.setState({produto: e.value})}/>
                     <Input type='text' name='Serviços executados'  value={this.state.servicosExecutadosMontagem} onChange={(e) => this.setState({servicosExecutadosMontagem: e.target.value})}/>
                     <Input type='text' name='Testes realizados' value={this.state.testeRealizadosMontagem} onChange={(e) => this.setState({testeRealizadosMontagem: e.target.value})}/>
-                    <ListaDeParceiros name="Parceiros" value={this.state.parceiros} onChange={(e) => this.setState({parceiros: e.map(p => p.value)})}/>
+                    <ListaDeParceiros name="Parceiros" value={this.state.parceiros} onChange={(e) => { this.setState({parceiros: e.map(p => p.value)});}} isOptionDisabled={() => this.state.parceiros.length >= 2}/>
                     <Input type='text' name='Nota Fiscal' value={this.state.notaFiscal} onChange={(e) => this.setState({notaFiscal: e.target.value})}/>
                     <ValorSecao valor={this.getValorTotalInstalacao()}/>
                 </div>
