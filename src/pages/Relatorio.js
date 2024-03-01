@@ -18,6 +18,9 @@ import Configuracao from '../data/Configuracoes';
 import Chart from 'react-apexcharts'
 import ListaDocumentos from '../components/ListaDocumentos';
 import Input from '../components/Input';
+import ListaFiltroDocumento from '../components/ListaFiltroDocumento';
+import ListaDeUsuarios from '../components/ListaDeUsuarios';
+import TabelaDocumentos from '../components/TabelaDocumentos';
 
 function Relatorio() {
   const configuracao = new Configuracao()
@@ -55,15 +58,9 @@ function Relatorio() {
           <Input type='date' name="Fim" value={new Date()} style={{'display': 'inline-block'}}/>
         </div>
         
-        <Input type='checkbox' name="Com Instalação"/>
-        <Input type='checkbox' name="Com Pós-Venda"/>
-
-        <div className='filtro-numeros'>
-          <Input type='number' name="Horas de trabalho" value={1}/>
-          <Input type='number' name="Distância"/>
-        </div>
-       
-        <Button text="Filtar"/>
+        <ListaFiltroDocumento />
+        <ListaDeUsuarios />
+        <Button text="Filtar" style={{'margin-left': '10px'}}/>
       </div>
     )
   }
@@ -87,7 +84,8 @@ function Relatorio() {
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: R$ {totalGeral} </span>
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão total: R$ {comissaoTotal} </span>
             </div>
-            <ListaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal}/>
+            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal}/>
+           
         </div>
        
 

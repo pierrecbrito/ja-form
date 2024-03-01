@@ -135,10 +135,26 @@ class Documentos {
         return resposta
     }
 
-    async listarDocumentos() {
+    async listarDocumentosDeInstalacao() {
         let promise = this.databases.listDocuments(
             "65ca0aadd4fb66e02098", //ID do banco
-            "65ca2260c6790927a758" //ID da coleção de Produtos
+            "65d5f57b11be0abdb8ca" //ID da coleção de Produtos
+        );
+
+        let documentos = null
+        await promise.then((response) => {
+            console.log(response)
+            documentos = response.documents
+            console.log('documentios', documentos)
+        })
+
+        return documentos
+    }
+
+    async listarDocumentosDePV() {
+        let promise = this.databases.listDocuments(
+            "65ca0aadd4fb66e02098", //ID do banco
+            "65d5f76187efe1c96706" //ID da coleção de Produtos
         );
 
         let documentos = null

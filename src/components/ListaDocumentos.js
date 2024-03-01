@@ -5,6 +5,7 @@ import Produtos from '../data/Produtos'
 import React, { useEffect, useState } from 'react';
 import CardDocumento from './CardDocumento';
 import Documentos from '../data/Documentos'
+import CardInstalacao from './CardInstalacao';
 
 class ListaDocumentos extends React.Component {
 
@@ -36,7 +37,7 @@ class ListaDocumentos extends React.Component {
 
     listandoDocumentos() {
         let lista = []
-        this.state.documentos.forEach((documento) => lista.push(<CardDocumento documento={documento}/>))
+        this.state.documentos.forEach((documento) => lista.push(<CardInstalacao documento={documento}/>))
         return lista
     }
 
