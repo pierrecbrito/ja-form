@@ -178,6 +178,7 @@ class Formulario extends React.Component {
     } 
 
     render() {
+        
       return (
         <div className="App">
         <main className="App-fundo-dashboard">

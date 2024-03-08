@@ -66,7 +66,7 @@ function LinhaPV({documento}) {
             <td className='coluna-documento'  style={{'padding': '5px'}}>{status()}</td>
             <td className='coluna-documento' style={{'cursor': 'pointer'}}>{documento.cabecalho.nome}</td>
             <td className='coluna-documento'>{new Date(documento.$createdAt).toLocaleDateString('pt-BR', formatOptions)}</td>
-            <td className='coluna-documento'>{documento.produto}</td>
+            <td className='coluna-documento'>Pós-venda</td>
             <td className='coluna-documento'>{documento.cabecalho.comissao}</td>
             <td className='coluna-documento'><img src={Expand3} style={{top: '15px', right: '15px', width: '1em', 'cursor': 'pointer'}} onClick={() => {setShowModal(true)}}/></td>
 

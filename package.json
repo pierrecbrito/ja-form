@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.45.2",
     "appwrite": "^13.0.1",
+    "axios": "^1.6.7",
     "jquery": "^3.7.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
@@ -18,6 +19,7 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
     "react-slide-routes": "^3.0.3",
+    "react-tabs": "^6.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

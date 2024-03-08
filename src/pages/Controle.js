@@ -14,6 +14,9 @@ import React from 'react';
 import ModalCadastroDeProduto from '../components/ModalCadastroProduto';
 import Produtos from '../data/Produtos';
 import Configuracao from '../data/Configuracoes';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import '../css/meu-tabs.css'
 
 function Controle() {
   const configuracao = new Configuracao()
@@ -50,16 +53,28 @@ function Controle() {
         <Menu/>
 
         <h3 className="mensage">Controle</h3>
-        
-        <div className='container-add-button'>
-          <Button text="Adicionar produto" onClick={openModal}/>
-        </div>
 
-        <Card titulo="Produtos" body={<TableProdutos atualziarTabela={atualizarTabela} setAtualizarTabela={setAtualizarTabela}/>}/>
+        <Tabs>
+          <TabList style={{textAlign: 'left'}}>
+            <Tab>Produtos e valores</Tab>
+            <Tab>Usuários</Tab>
+          </TabList>
 
-        <KMPrice valor={valorKM}/>
+          <TabPanel>
+            <div className='container-add-button'>
+              <Button text="Adicionar produto" onClick={openModal}/>
+            </div>
 
-        <Button text='Atualizar'/>
+            <Card titulo="Produtos" body={<TableProdutos atualziarTabela={atualizarTabela} setAtualizarTabela={setAtualizarTabela}/>}/>
+
+            <KMPrice valor={valorKM}/>
+
+            <Button text='Atualizar'/>
+          </TabPanel>
+          <TabPanel>
+            <h2>Any content 2</h2>
+          </TabPanel>
+        </Tabs>
     </main>
 
     <ModalCadastroDeProduto showModal={modalCadastroIsOpen} closeModalFunc={closeModal} setAtualizarTabela={setAtualizarTabela}/>

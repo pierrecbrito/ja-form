@@ -57,7 +57,7 @@ class TabelaDocumentos extends React.Component {
                         <th style={{'padding': '15px'}}>Status</th>
                         <th>Cliente</th>
                         <th>Data</th>
-                        <th>Produto</th>
+                        <th>Tipo</th>
                         <th>Comissão</th>
                         <th>Ação</th>
                     </tr>

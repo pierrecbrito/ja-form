@@ -33,6 +33,7 @@ function Relatorio() {
   const [options, setOptions] = React.useState({labels: labels})
   const [totalGeral, setTotalGeral] = React.useState(0)
   const [comissaoTotal, setComissaoTotal] = React.useState(0)
+  const [filtro, setFiltro] = React.useState({tipo: 'Todos'})
 
   function openModal() {
     setIsOpen(true);

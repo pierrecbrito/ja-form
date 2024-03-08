@@ -7,7 +7,10 @@ import Controle from './pages/Controle';
 import MensagemInicial from './pages/MensagemInicial';
 import Formulario from './pages/Formulario';
 import Relatorio from './pages/Relatorio';
+import Login from './pages/Login'
 import { Client } from 'appwrite';
+import Auth from './data/Auth';
+import PrivateRoutes from './components/PrivateRoutes';
 
 const client = new Client();
 client
@@ -15,15 +18,19 @@ client
     .setProject('65c4d9d1a09d06e65a7d');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <BrowserRouter>
     <SlideRoutes duration={600}>
-        <Route path="/" element={<MensagemInicial />}/>
-        <Route path='login' element={<MensagemInicial />} />
-        <Route path='inicio' element={<MensagemInicial />} />
-        <Route path='controle' element={<Controle />} />
-        <Route path='formulario' element={<Formulario />} />
-        <Route path='relatorio' element={<Relatorio />} />
+        
+        <Route path='login' element={<Login />} />
+        <Route element={<PrivateRoutes/>}>
+          <Route path="/" element={<MensagemInicial />} />
+          <Route path='inicio' element={<MensagemInicial />} />
+          <Route path='controle' element={<Controle />} />
+          <Route path='formulario' element={<Formulario />} />
+          <Route path='relatorio' element={<Relatorio />} />
+        </Route>
     </SlideRoutes>
   </BrowserRouter>
 );
