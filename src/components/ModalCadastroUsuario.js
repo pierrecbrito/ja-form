@@ -7,6 +7,7 @@ import InputDinheiro from './InputDinheiro';
 import Button from './Button';
 import Produtos from '../data/Produtos';
 import toast from 'react-hot-toast';
+import Auth from '../data/Auth';
 
 const customStyles = {
     content: {
@@ -21,32 +22,31 @@ const customStyles = {
 
 ReactModal.setAppElement('#root');
 
-class ModalCadastroDeProduto extends React.Component {
+class ModalCadastroUsuario extends React.Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            descricao: '',
-            valorMontagem: 0,
-            valorPV: 0
+            nome: '',
+            email: '',
+            senha: ''
         }
 
-        this.salvarProduto = () => {
+        this.salvarUsuario= () => {
             //let valorMontagem = this.state.valorMontagem.toString().replace('R$', '')
             console.log(this.state)
-            Produtos.addProduto(this.state.descricao, this.state.valorMontagem, this.state.valorPV)
+            Auth.createUser(this.state.nome, this.state.email, this.state.senha)
                 .then((resposta) => {
-                    this.notificarProdutoCadastrado()
+                    this.notificarUsuarioCadastrado()
                     this.props.closeModalFunc()
-                    this.props.setAtualizarTabela(true)
                     window.location.reload()
                 })
         }
     }
 
     
-    notificarProdutoCadastrado(){
-        toast('Produto cadastrado!', {
+    notificarUsuarioCadastrado(){
+        toast('Usuário cadastrado com sucesso!', {
             duration: 5000,
             position: 'bottom-center',
           
@@ -78,14 +78,15 @@ class ModalCadastroDeProduto extends React.Component {
 
             >
                 <header className='cabecalho_modal'>
-                    Cadastrar produto
+                    Cadastrar usuário colaborador
                     <span className='btn-fechar-modal' onClick={this.props.closeModalFunc}>X</span>
                 </header>
                 <main className='body_modal'>
-                    <Input name="Descrição" type="text" value={this.state.descricao} onChange={(e) => this.setState({descricao: e.target.value})}/>
-                    <InputDinheiro name="Valor de Montagem" value={this.state.valorMontagem} onChange={(e, value, maskedValue) => this.setState({valorMontagem: value})}/>
-                    <InputDinheiro name="Valor pós-venda" value={this.state.valorPV} onChange={(e, value, maskedValue) => this.setState({valorPV: value})}/>
-                    <Button text="Salvar" onClick={this.salvarProduto}/>
+                    <Input name="Nome" type="text" value={this.state.nome} onChange={(e) => this.setState({nome: e.target.value})}/>
+                    <Input name="E-mail" type="email" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})}/>
+                    <Input name="Senha" type="password" value={this.state.senha} onChange={(e) => this.setState({senha: e.target.value})}/>
+
+                    <Button text="Salvar" onClick={this.salvarUsuario}/>
                 </main>
         
             </ReactModal>
@@ -96,4 +97,4 @@ class ModalCadastroDeProduto extends React.Component {
 
 
 
-export default ModalCadastroDeProduto;
+export default ModalCadastroUsuario;

@@ -2,3 +2,24 @@
     text-align: right;
     padding: 15px 0;
 }
+
+#controle .KMPrice, #controle .horaPrice {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#controle .KMPrice label, #controle .horaPrice label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #006341; 
+    color: #FFFFFF;
+    font-weight: 500;
+    border: none;
+}
+
+#controle .KMPrice input, #controle .horaPrice input {
+    border-radius: 0;
+    border: 2px solid #006341 !important;
+    outline: #006341;
+    padding: 8px;
+}

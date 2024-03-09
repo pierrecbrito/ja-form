@@ -1,0 +1,13 @@
+.horaPrice {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.horaPrice input {
+    max-width: 85px !important;
+    display: inline;
+}
+
+.horaPrice label {
+    display: block;
+}

@@ -1,4 +1,6 @@
 import { Client, Databases, Query, ID } from "appwrite";
+import axios from "axios";
+import Auth from "./Auth";
 
 class Produto {
     constructor(descricao, valorMontagem, valorPV) {//vALORpv = Valor Pós-venda
@@ -35,6 +37,26 @@ class Produtos {
         })
 
         return produtos
+    }
+
+    static async listarProdutos() {//Do Xano
+        return axios.get('https://x8ki-letl-twmt.n7.xano.io/api:sj42URrG/produto', {
+            headers: {
+                'Authorization': `Bearer ${Auth.getToken()}`,
+            }
+        })
+    }
+
+    static async addProduto(nome, preco_instalacao, preco_pv) {//Do Xano
+        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:sj42URrG/produto',{
+            "nome": nome,
+            "preco_instalacao": preco_instalacao,
+            "preco_pv": preco_pv
+          }, {
+            headers: {
+                'Authorization': `Bearer ${Auth.getToken()}`,
+            }
+        })
     }
 
     async cadastrarProduto(descricao, valorMontagem, valorPV) {

@@ -8,14 +8,14 @@ function TableProdutos({atualizarTabela, setAtualizarTabela}) {
   const [produtos, setProdutos] = useState('Carregando...')
 
   const atualizar = () => {
-    const produtosDB = new Produtos()
-    produtosDB.listarProdutos().then((response) => {
+    
+    Produtos.listarProdutos().then((response) => {
         setProdutos(
-          response.map((produto) =>   //Constrói uma linha de tabela para cada produto no banco
+          response.data.map((produto) =>   //Constrói uma linha de tabela para cada produto no banco
             <tr className='linha'>
-              <td>{produto.descricao}</td>
-              <td>R$ {produto.valorMontagem} </td>
-              <td>R$ {produto.valorPV}</td>
+              <td>{produto.nome}</td>
+              <td>R$ {produto.preco_instalacao} </td>
+              <td>R$ {produto.preco_pv}</td>
             </tr>
         ))
     })

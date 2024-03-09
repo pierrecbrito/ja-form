@@ -1,4 +1,4 @@
-import '../css/KMPrice.css';
+import '../css/horaPrice.css';
 import '../css/Suite.css';
 
 import IntlCurrencyInput from "react-intl-currency-input";
@@ -17,15 +17,15 @@ const currencyConfig = {
     },
   };
 
-function KMPrice({valor, onChange}) {
+function HoraPrice({valor, onChange}) {
 
   return (
-    <div className='KMPrice'>
-        <label>Valor do combustível por KM:</label>
+    <div className='horaPrice'>
+        <label>Valor da hora de serviço:</label>
         <IntlCurrencyInput currency="BRL" config={currencyConfig} max={200} value={valor} onChange={onChange}/>
     </div>
   );
 }
 
 
-export default KMPrice
+export default HoraPrice

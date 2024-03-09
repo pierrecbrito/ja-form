@@ -33,6 +33,28 @@ class Auth {
             }
         })
     }
+
+    static async createUser(nome, email, senha) {
+        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:pBK6sn-v/auth/signup',
+            {
+                "email": email,
+                "password": senha,
+                "nome": nome
+            }
+        , {
+            headers: {
+                'Authorization': `Bearer ${this.getToken()}`,
+            }
+        })
+    }
+
+    static async getAllUsers() {
+        return axios.get('https://x8ki-letl-twmt.n7.xano.io/api:pBK6sn-v/user', {
+            headers: {
+                'Authorization': `Bearer ${this.getToken()}`,
+            }
+        })
+    }
     
 }
 
