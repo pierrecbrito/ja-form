@@ -40,6 +40,7 @@ class Produtos {
     }
 
     static async listarProdutos() {//Do Xano
+        console.log("Produtos puxados!")
         return axios.get('https://x8ki-letl-twmt.n7.xano.io/api:sj42URrG/produto', {
             headers: {
                 'Authorization': `Bearer ${Auth.getToken()}`,

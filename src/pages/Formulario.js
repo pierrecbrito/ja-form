@@ -9,7 +9,7 @@ import $ from 'jquery'
 import Input from '../components/Input';
 import InputComMascara from '../components/InputComMascara';
 import SelectSection from '../components/SelectSection';
-import ListaDeProduto from '../components/ListaDeProduto';
+import ListaDeProduto from '../components/ListaDeProduto-xano';
 import InputRadio from '../components/InputRadio';
 import React from 'react';
 import Button from '../components/Button'
@@ -19,6 +19,7 @@ import ValorSecao from '../components/ValorSecao';
 import Configuracao from '../data/Configuracoes';
 import Produtos from '../data/Produtos';
 import toast, { Toaster } from 'react-hot-toast';
+import Auth from '../data/Auth';
 
 class Formulario extends React.Component {
 
@@ -59,7 +60,8 @@ class Formulario extends React.Component {
             horasTrabalhadas: 0, 
             valorDoKM: 0,
             valorDaHora: 0,
-            produtos: []
+            produtos: [],
+            allParceiros: []
         }
 
         this.submit = () => {     
@@ -102,7 +104,15 @@ class Formulario extends React.Component {
         let configuracaoDB = new Configuracao()
         configuracaoDB.getValorDoKM().then(valor => this.setState({valorDoKM: valor}))
         configuracaoDB.getValorDaHora().then(valor => this.setState({valorDaHora: valor}))
-        new Produtos().listarProdutos().then(produtos => this.setState({produtos: produtos}))
+        Produtos.listarProdutos().then(produtos => this.setState({produtos: produtos.data}))
+        Auth.getUserAuthenticated()//Lista parceiros
+            .then(info => {
+                let usuario = info.data
+                Auth.getAllUsers().then((info) => {
+                    let outrosParceiros = info.data.filter(usuarios => usuarios.email != usuario.email && usuarios.papel == 'colaborador')
+                    this.setState({allParceiros: outrosParceiros})
+                })
+            })
     }
 
     getValorMontagemDe(produtoDescricao) {
@@ -212,10 +222,10 @@ class Formulario extends React.Component {
                     <Input type='number' name='Número de máquina' value={this.state.numeroMaquinaMontagem} onChange={(e) => this.setState({numeroMaquinaMontagem: e.target.value})}/>
                     <InputRadio name="É Máquina nova" id="maquina-nova" checked={this.state.maquinaNovaMontagem} onChange={(e) => this.setState({maquinaNovaMontagem: e.target.checked})}/>
                     <Input type='text' name='Faturado pela revenda' value={this.state.faturadoRevendaMontagem} onChange={(e) => this.setState({faturadoRevendaMontagem: e.target.value})}/>
-                    <ListaDeProduto name="Produtos"  value={this.state.produto} onChange={(e) => this.setState({produto: e.value})}/>
+                    <ListaDeProduto name="Produtos"  value={this.state.produto} onChange={(e) => this.setState({produto: e.value})} options={this.state.produtos.map(produto => {return {value: produto.nome, label: produto.nome}})}/>
                     <Input type='text' name='Serviços executados'  value={this.state.servicosExecutadosMontagem} onChange={(e) => this.setState({servicosExecutadosMontagem: e.target.value})}/>
                     <Input type='text' name='Testes realizados' value={this.state.testeRealizadosMontagem} onChange={(e) => this.setState({testeRealizadosMontagem: e.target.value})}/>
-                    <ListaDeParceiros name="Parceiros" value={this.state.parceiros} onChange={(e) => { this.setState({parceiros: e.map(p => p.value)});}} isOptionDisabled={() => this.state.parceiros.length >= 2}/>
+                    <ListaDeParceiros name="Parceiros" options={this.state.allParceiros.map(parceiro => {return {value: parceiro.nome, label: parceiro.nome}})} value={this.state.parceiros} onChange={(e) => { this.setState({parceiros: e.map(p => p.value)});}} isOptionDisabled={() => this.state.parceiros.length >= 2}/>
                     <Input type='text' name='Nota Fiscal' value={this.state.notaFiscal} onChange={(e) => this.setState({notaFiscal: e.target.value})}/>
                     <ValorSecao valor={this.getValorTotalInstalacao()}/>
                 </div>
@@ -227,7 +237,7 @@ class Formulario extends React.Component {
                     <Input type='number' name='Número de máquina'  value={this.state.numeroMaquinaPV} onChange={(e) => this.setState({numeroMaquinaPV: e.target.value})}/>
                     <InputRadio name="É Máquina nova" id="maquina-nova" value="Máquina nova" checked={this.state.maquinaNovaPV} onChange={(e) => this.setState({maquinaNovaPV: e.target.checked})}/>
                     <Input type='text' name='Faturado pela revenda'  value={this.state.faturadoRevendaPV} onChange={(e) => this.setState({faturadoRevendaPV: e.target.value})}/>
-                    <ListaDeProduto name="Produtos" value={this.state.produtoPV} onChange={(e) => this.setState({produtoPV: e.value})}/>
+                    <ListaDeProduto name="Produtos" value={this.state.produtoPV} onChange={(e) => this.setState({produtoPV: e.value})} options={this.state.produtos.map(produto => {return {value: produto.nome, label: produto.nome}})}/>
                     <Input type='text' name='Serviços executados' value={this.state.servicosExecutadosPV} onChange={(e) => this.setState({servicosExecutadosPV: e.target.value})}/>
                     <Input type='text' name='Testes realizados' value={this.state.testeRealizadosPV} onChange={(e) => this.setState({testeRealizadosPV: e.target.value})}/>
                     <ValorSecao valor={this.getValorTotalPV()}/>

@@ -2,14 +2,8 @@ import '../css/Input.css';
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
 
-function ListaDeParceiros({name, value, onChange, isOptionDisabled}) {
+function ListaDeParceiros({name, options, onChange, isOptionDisabled}) {
 
-    const options = [
-        { value: 'Casemiro', label: 'Casemiro' },
-        { value: 'Bruno', label: 'Bruno' },
-        { value: 'Lucas', label: 'Lucas' },
-        { value: 'Fred', label: 'Fred' }
-      ]
       
     
     return (
