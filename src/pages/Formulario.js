@@ -104,14 +104,20 @@ class Formulario extends React.Component {
         let configuracaoDB = new Configuracao()
         configuracaoDB.getValorDoKM().then(valor => this.setState({valorDoKM: valor}))
         configuracaoDB.getValorDaHora().then(valor => this.setState({valorDaHora: valor}))
-        Produtos.listarProdutos().then(produtos => this.setState({produtos: produtos.data}))
+        Produtos.listarProdutos().then(produtos => this.setState({produtos: produtos.data})).catch((erro) => {
+            this.notificarErro("Erro ao carregar produtos. Recarregue a página.")
+        })
         Auth.getUserAuthenticated()//Lista parceiros
             .then(info => {
                 let usuario = info.data
                 Auth.getAllUsers().then((info) => {
                     let outrosParceiros = info.data.filter(usuarios => usuarios.email != usuario.email && usuarios.papel == 'colaborador')
                     this.setState({allParceiros: outrosParceiros})
+                }).catch((erro) => {
+                    this.notificarErro("Erro ao carregar parceiros. Recarregue a página.")
                 })
+            }).catch((erro) => {
+                this.notificarErro("Erro ao carregar parceiros. Recarregue a página.")
             })
     }
 
@@ -178,6 +184,28 @@ class Formulario extends React.Component {
           
             // Custom Icon
             icon: '✅',
+          
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: '#000',
+              secondary: '#fff',
+            },
+        });
+    } 
+
+    notificarErro(erro){
+        toast(erro, {
+            duration: 5000,
+            position: 'bottom-center',
+          
+            // Styling
+            style: {
+                boxShadow: '0 1rem 3rem rgba(0,0,0,.175) !important'
+            },
+            className: '',
+          
+            // Custom con
+            icon: '❌',
           
             // Change colors of success/error/loading icon
             iconTheme: {

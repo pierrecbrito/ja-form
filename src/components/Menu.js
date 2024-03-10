@@ -27,6 +27,7 @@ function Menu({type, name}) {
             console.log(user)
             setUsuario(user.data)
         }).catch((error) => {
+            navigate('/login')
             console.log(error)
         })
     },[])

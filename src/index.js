@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route } from "react-router-dom";
@@ -12,11 +12,6 @@ import { Client } from 'appwrite';
 import Auth from './data/Auth';
 import PrivateRoutes from './components/PrivateRoutes';
 
-const client = new Client();
-client
-    .setEndpoint('https://cloud.appwrite.io/v1')
-    .setProject('65c4d9d1a09d06e65a7d');
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -24,7 +19,7 @@ root.render(
     <SlideRoutes duration={600}>
         
         <Route path='login' element={<Login />} />
-        <Route element={<PrivateRoutes/>}>
+        <Route element={<PrivateRoutes isAuthenticated={Auth.isAuthenticated()}/>}>
           <Route path="/" element={<MensagemInicial />} />
           <Route path='inicio' element={<MensagemInicial />} />
           <Route path='controle' element={<Controle />} />

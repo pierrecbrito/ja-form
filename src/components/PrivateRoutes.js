@@ -1,9 +1,8 @@
 import { Outlet, Navigate } from 'react-router-dom'
-import Auth from '../data/Auth'
-const PrivateRoutes = () => {
-    console.log('Auth', Auth.isAuthenticated())
+
+const PrivateRoutes = (isAuthenticated) => {
     return(
-        Auth.isAuthenticated() ? <Outlet/> : <Navigate to="login"/>
+        isAuthenticated ? <Outlet/> : <Navigate to="login"/>
     )
 }
 
