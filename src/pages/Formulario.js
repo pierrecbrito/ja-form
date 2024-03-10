@@ -65,32 +65,26 @@ class Formulario extends React.Component {
         }
 
         this.submit = () => {     
-            const documentosDB = new Documentos()
-           
+         
+            const novoDocumento = {...this.state, 
+                totalInstalacao: this.getValorTotalInstalacao(),
+                totalPV: this.getValorTotalPV(),
+                totalDistancia: this.getValorTotalDistancia(),
+                totalHorasTrabalhadas: this.getValorTotalHorasTrabalhadas(),
+                totalDocumento: this.getValorTotal(),
+                comissao: this.state.parceiros.length > 0 ? (this.getComissao()/this.state.parceiros.length).toFixed(2) : this.getComissao().toFixed(2),
+                valorProdutoPV: this.getValorPVDe(this.state.produtoPV),
+                valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
+                parceiros: this.state.parceiros.length > 0 ? this.state.parceiros.join(',') : 'Sem parceiros.',
+            }
 
-                const novoDocumento = {...this.state, 
-                    totalInstalacao: this.getValorTotalInstalacao(),
-                    totalPV: this.getValorTotalPV(),
-                    totalDistancia: this.getValorTotalDistancia(),
-                    totalHorasTrabalhadas: this.getValorTotalHorasTrabalhadas(),
-                    totalDocumento: this.getValorTotal(),
-                    comissao: (this.getComissao()/this.state.parceiros.length).toFixed(2),
-                    valorProdutoPV: this.getValorPVDe(this.state.produtoPV),
-                    valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
-                    parceiros: this.state.parceiros.join(','),
-                }
+            console.log('Novo Documento', novoDocumento)
 
-                console.log('Novo Documento', novoDocumento)
-
-                documentosDB.salvarDocumento(novoDocumento)
-                    .then((result) => {
-                        console.log(result)
-
-                        if(result) {
-                            this.notificarDocumentoEnviado()
-                        }
-                    })
-
+            Documentos.salvarDocumento(novoDocumento)
+                .then((result) => {
+                    console.log(result)
+                    this.notificarDocumentoEnviado()
+                })
            
         }
 
@@ -107,6 +101,7 @@ class Formulario extends React.Component {
         Produtos.listarProdutos().then(produtos => this.setState({produtos: produtos.data})).catch((erro) => {
             this.notificarErro("Erro ao carregar produtos. Recarregue a página.")
         })
+
         Auth.getUserAuthenticated()//Lista parceiros
             .then(info => {
                 let usuario = info.data

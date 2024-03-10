@@ -1,5 +1,6 @@
 import { Client, Databases, Query, ID } from "appwrite";
-
+import Auth from './Auth'
+import axios from "axios";
 
 class Documentos {
     constructor() {
@@ -178,6 +179,97 @@ class Documentos {
         }
         return result;
     }
+
+
+    /* Xano Client: */
+    static async createDocInfo(distancia, horas,valorKM, valorHora, total, totalHoras, totalKMs) {
+        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:GeB5wpvs/info_adicionais', {
+            "distancia": distancia,
+            "horas": horas,
+            "valorKM": valorKM,
+            "valorHora": valorHora,
+            "total": total,
+            "totalHoras": totalHoras,
+            "totalKMs": totalKMs
+        },{
+            headers: {
+                'Authorization': `Bearer ${Auth.getToken()}`,
+            }
+        })
+    }
+
+    /* Xano Client: */
+    static async createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, total, comissao, colaboradoes, user_id, info_adicionais_id) {
+        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:GeB5wpvs/cabecalho', 
+            {
+                "nome": nome,
+                "cnpj": cnpj,
+                "cpf": cpf,
+                "endereco": endereco,
+                "cep": cep,
+                "cidade": cidade,
+                "telefone": telefone,
+                "total": total,
+                "comissao": comissao,
+                "colaboradoes": colaboradoes,
+                "user_id": user_id,
+                "aprovado": "1",
+                "info_adicionais_id": info_adicionais_id
+            },{
+            headers: {
+                'Authorization': `Bearer ${Auth.getToken()}`,
+            }
+        })
+    }
+
+    static async salvarDocumento({nome, cnpj, cpf, endereco, cep, cidade, telefone, maquinaMontagem, quantLinhasMontagem, numeroMaquinaMontagem,
+        maquinaNovaMontagem,faturadoRevendaMontagem,produto,servicosExecutadosMontagem,testeRealizadosMontagem,
+        parceiros,notaFiscal,  maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV,
+        servicosExecutadosPV, testeRealizadosPV, distancia, horasTrabalhadas,  
+        valorDoKM, valorDaHora, totalInstalacao, totalPV, totalDistancia, totalHorasTrabalhadas, totalDocumento,
+        comissao, valorProdutoPV, valorProdutoMontagem}) {
+
+        let quantidadeDeLinhas = parseInt(quantLinhasMontagem)    
+        let quantidadeDeLinhasPV = parseInt(quantLinhasPV)    
+        let distaciaEmInteiro = parseInt(distancia)
+        let horasTrabalhasEmInteiro = parseInt(horasTrabalhadas)
+
+        
+        const todoDocumento = {nome, cnpj, cpf, endereco, cep, cidade, telefone, maquinaMontagem, quantLinhasMontagem: quantidadeDeLinhas, numeroMaquinaMontagem,
+            maquinaNovaMontagem,faturadoRevendaMontagem,produto,servicosExecutadosMontagem,testeRealizadosMontagem,
+            parceiros,notaFiscal, maquinaPV, quantLinhasPV: quantidadeDeLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV,
+            servicosExecutadosPV, testeRealizadosPV, distancia: distaciaEmInteiro, horasTrabalhadas: horasTrabalhasEmInteiro,  valorDoKM, valorDaHora, 
+            totalInstalacao, totalPV, totalDistancia, totalHorasTrabalhadas, totalDocumento, comissao, valorProdutoPV, valorProdutoMontagem}
+        
+        let colaboradoes = parceiros
+
+        let docInfo = await this.createDocInfo(distancia, horasTrabalhadas, valorDoKM, valorDaHora, totalHorasTrabalhadas + totalDistancia, totalHorasTrabalhadas, totalDistancia)
+        let cabecalho = await this.createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, totalDocumento, comissao, colaboradoes, 1, docInfo.data.id)
+        
+        
+        /*
+        if(produto != '' && parseFloat(totalInstalacao) > 0) {
+            let donos = parceiros.split(",")
+            for (var i = 0; i < donos.length; i++) {
+                await this.salvarDocumentoDeInstalacao({maquina: maquinaMontagem, quantLinhas: quantLinhasMontagem, numeroMaquina: numeroMaquinaMontagem,
+                    maquinaNova: maquinaNovaMontagem, faturadoRevenda: faturadoRevendaMontagem, produto, servicosExecutados: servicosExecutadosMontagem, testesRealizados: testeRealizadosMontagem, parceiros, notaFiscal, valorProduto: valorProdutoMontagem, total: totalInstalacao, cabecalho: cabecalho.$id, dono: donos[i]}).then(resultado => console.log("Inst",resultado))
+            }
+
+            await this.salvarDocumentoDeInstalacao({maquina: maquinaMontagem, quantLinhas: quantLinhasMontagem, numeroMaquina: numeroMaquinaMontagem,
+                maquinaNova: maquinaNovaMontagem, faturadoRevenda: faturadoRevendaMontagem, produto, servicosExecutados: servicosExecutadosMontagem, testesRealizados: testeRealizadosMontagem, parceiros, notaFiscal, valorProduto: valorProdutoMontagem, total: totalInstalacao, cabecalho: cabecalho.$id, dono: 'Pierre'}).then(resultado => console.log("Inst",resultado))
+           
+        }
+
+        if(produtoPV != '' && parseFloat(totalPV) > 0) {
+            let docPV = await this.salvarDocumentoPV({maquina: maquinaPV, quantLinhas: quantLinhasPV, numeroMaquina: numeroMaquinaPV,
+                maquinaNova: maquinaNovaPV, faturadoRevenda: faturadoRevendaPV, produto: produtoPV, servicosExecutados: servicosExecutadosPV, testesRealizados: testeRealizadosPV, valorProduto: valorProdutoPV, total: totalPV, cabecalho: cabecalho.$id  }).then(resultado => console.log("PV",resultado))
+        }*/
+
+        //let docInfo = await this.salvarDocumentoInfo({distancia, horas: horasTrabalhasEmInteiro, valorHora: valorDaHora, valorKM: valorDoKM, totalDistancia: totalDistancia, cabecalho: cabecalho.$id, totalHorasTrabalhadas}).then(resultado => console.log("Info", resultado))
+        
+        return {docInfo, cabecalho}
+    }
+
 
 }
 
