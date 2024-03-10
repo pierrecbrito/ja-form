@@ -13,6 +13,14 @@
 
 #secao-instalacao, #secao-pos-venda, #secao-adicionais, #secao-total {
     width: 100%;
+   
+}
+
+#secao-instalacao, #secao-pos-venda, #secao-adicionais {
+    border: 1px solid gray;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 15px;
 }
 
 #secao-total {
