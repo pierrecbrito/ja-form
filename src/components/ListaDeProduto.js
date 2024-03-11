@@ -12,7 +12,7 @@ class ListaDeProduto extends React.Component {
             promiseOptions: () => new Promise((resolve) => {
                 new Produtos().listarProdutos()
                     .then(produtos => {
-                        let options = produtos.map(produto => {return {value: produto.descricao, label: produto.descricao}})
+                        let options = produtos.map(produto => {return {value: produto.id, label: produto.descricao}})
                         resolve(options)
                     })})
         };

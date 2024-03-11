@@ -29,13 +29,14 @@ class TabelaDocumentos extends React.Component {
 
     componentDidMount() {
 
-        new Documentos().listarDocumentosDeInstalacao()
+        Documentos.listInstalacoes()
             .then(documentosDeInstalacao => {
-                new Documentos().listarDocumentosDePV()
+                Documentos.listPosVendas()
                     .then(documentosDePV => {
-                        this.props.setTotalGeral(documentosDeInstalacao.reduce((a, b) => a + b.cabecalho.total, 0) + documentosDePV.reduce((a, b) => a + b.cabecalho.total, 0))
-                        this.props.setComissaoTotal(documentosDeInstalacao.reduce((a, b) => a + b.cabecalho.comissao, 0) + documentosDePV.reduce((a, b) => a + b.cabecalho.comissao, 0))
-                        this.setState({documentos: documentosDeInstalacao.concat(documentosDePV)})
+                        let cabecalhosContabilizados = []
+                        this.props.setTotalGeral(documentosDeInstalacao.data.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b._cabecalho.id)) {cabecalhosContabilizados.push(b._cabecalho.id); return  a + b._cabecalho.total; } else { return a } }, 0) + documentosDePV.data.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b._cabecalho.id)) {cabecalhosContabilizados.push(b._cabecalho.id); return  a + b._cabecalho.total; } else { return a } }, 0))
+                        this.props.setComissaoTotal(documentosDeInstalacao.data.reduce((a, b) => a + b._cabecalho.comissao, 0))
+                        this.setState({documentos: documentosDeInstalacao.data.concat(documentosDePV.data)})
                     })
                 
             })
@@ -58,6 +59,7 @@ class TabelaDocumentos extends React.Component {
                         <th>Cliente</th>
                         <th>Data</th>
                         <th>Tipo</th>
+                        <th>Usuário</th>
                         <th>Comissão</th>
                         <th>Ação</th>
                     </tr>

@@ -19,8 +19,7 @@ const customStyles = {
       transform: 'translate(-50%, -50%)',
       width: '100%',
       maxWidth: '700px',
-      maxHeight: '600px',
-      overflow:'scroll'
+      borderRadius: '15px'
     },
   };
 
@@ -46,7 +45,7 @@ function LinhaInstalacao({documento}) {
     const [showModal, setShowModal] = useState(false)
 
     const status = () => {
-        if(documento.aprovado) {
+        if(documento._cabecalho.aprovado) {
             return (
                 <div style={{'text-align': 'center', 'font-size': '0.9rem'}}>
                     <span style={{'background-color': 'rgba(0, 99, 65, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Deferido</span>
@@ -64,10 +63,11 @@ function LinhaInstalacao({documento}) {
     return (
         <tr class="linha-documento" >
             <td className='coluna-documento'  style={{'padding': '5px'}}>{status()}</td>
-            <td className='coluna-documento' style={{'cursor': 'pointer'}}>{documento.cabecalho.nome}</td>
-            <td className='coluna-documento'>{new Date(documento.$createdAt).toLocaleDateString('pt-BR', formatOptions)}</td>
+            <td className='coluna-documento' style={{'cursor': 'pointer'}}>{documento._cabecalho.nome}</td>
+            <td className='coluna-documento'>{new Date(documento.created_at).toLocaleDateString('pt-BR', formatOptions)}h</td>
             <td className='coluna-documento'>Instalação</td>
-            <td className='coluna-documento'>{documento.cabecalho.comissao}</td>
+            <td className='coluna-documento'>{documento._user.nome}</td>
+            <td className='coluna-documento'>{documento._cabecalho.comissao}</td>
             <td className='coluna-documento'><img src={Expand2} style={{top: '15px', right: '15px', width: '1em', 'cursor': 'pointer'}} onClick={() => {setShowModal(true)}}/></td>
 
             <ReactModal 
@@ -80,43 +80,53 @@ function LinhaInstalacao({documento}) {
                     Documento
                     <span className='btn-fechar-modal' onClick={() => {setShowModal(false)}}>X</span>
                 </header>
-                <main className='body_modal'>
+                <main className='body_modal' style={{maxHeight: '600px',overflow:'scroll'}}>
                     <div id="secoes-container">
                         {status()}
-                        <div className='secao'>
+                        <div className='secao' style={{background: 'rgba(0, 99, 65, 0.3)', borderRadius: '15px', padding: '15px', marginTop: '10px'}}>
                             <h4 style={{'text-align': 'center'}}>Info gerais</h4>
                             <div className='secao-body'>
-                                <div className='info'>Nome: {documento.cabecalho.nome}</div>
-                                <div className='info'>CNPJ: {documento.cabecalho.cnpj}</div>
-                                <div className='info'>CPF: {documento.cabecalho.cpf}</div>
-                                <div className='info'>Endereço: {documento.cabecalho.endereco}</div>
-                                <div className='info'>CEP: {documento.cabecalho.cep}</div>
-                                <div className='info'>Cidade: {documento.cabecalho.cidade}</div>
-                                <div className='info'>Telefone: {documento.cabecalho.telefone}</div>
-                            </div>
-                        </div>
-                        <div className='secao'>
-                            <h4 style={{'text-align': 'center'}}>Dados de serviços</h4>
-                            <div className='secao-body'>
-                                <div className='info'>Deslocamento: {documento.cabecalho.docInfo.distancia}km</div>
-                                <div className='info'>Horas trabalhadas: {documento.cabecalho.docInfo.horas}h</div>
+                                <div className='info'>Nome: {documento._cabecalho.nome}</div>
+                                <div className='info'>CNPJ: {documento._cabecalho.cnpj}</div>
+                                <div className='info'>CPF: {documento._cabecalho.cpf}</div>
+                                <div className='info'>Endereço: {documento._cabecalho.endereco}</div>
+                                <div className='info'>CEP: {documento._cabecalho.cep}</div>
+                                <div className='info'>Cidade: {documento._cabecalho.cidade}</div>
+                                <div className='info'>Telefone: {documento._cabecalho.telefone}</div>
+                                <div className='info'>Cadatrado por {documento._cabecalho._user.nome} em {new Date(documento.created_at).toLocaleDateString('pt-BR', formatOptions)}h</div>
                                 <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão: R$ {documento.cabecalho.comissao}</span>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: R$ {documento._cabecalho.total}</span>
                                 </div>
                             </div>
                         </div>
-                        <div className='secao'>
-                            <h4 style={{'text-align': 'center'}}>Instalacao</h4>
+                        <div className='secao' style={{background: 'rgba(0, 99, 65, 0.3)', borderRadius: '15px', padding: '15px', marginTop: '10px'}}>
+                            <h4 style={{'text-align': 'center'}}>Dados de serviços</h4>
+                            <div className='secao-body'>
+                                <div className='info'>Deslocamento: {documento._cabecalho._info_adicionais.distancia}km</div>
+                                <div className='info'>Horas trabalhadas: {documento._cabecalho._info_adicionais.horas}h</div>
+                                <div style={{'text-align': 'right', 'marginTop': '10px'}}>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: R$ {documento._cabecalho._info_adicionais.total}</span>
+                                </div>
+                                <div style={{'text-align': 'right', 'marginTop': '10px'}}>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão: R$ {documento._cabecalho.comissao}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='secao' style={{ borderRadius: '15px', padding: '15px', marginTop: '10px', border:'1px solid gray'}}>
+                            <h4 style={{'text-align': 'center'}}>Instalação</h4>
+                            <div style={{'text-align': 'center', 'font-size': '0.9rem'}}>
+                                <span style={{'background-color': 'rgba(0, 99, 65, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Responsável: {documento._user.nome}</span>
+                            </div>
                             <div className='secao-body'>
                                 <div className='info'>Máquina: {documento.maquina}</div>
                                 <div className='info'>Linhas: {documento.quantLinhas}</div>
                                 <div className='info'>Número de máquina: {documento.numeroMaquina}</div>
                                 <div className='info'>Máquina Nova: {documento.maquinaNova ? 'Sim' : 'Não'}</div>
                                 <div className='info'>Faturado Pela Revenda: {documento.faturadoRevenda}</div>
-                                <div className='info'>Produto: {documento.produto}</div>
+                                <div className='info'>Produto: {documento._produto.nome}</div>
                                 <div className='info'>Serviços executados: {documento.servicosExecutados}</div>
                                 <div className='info'>Testes realizados: {documento.testesRealizados}</div>
-                                <div className='info'>Parceiros: {documento.parceiros}</div>
+                                <div className='info'>Parceiros: {documento.parceiros.map(p => p.nome).join(",")}</div>
                                 <div className='info'>Nota fiscal: {documento.notaFiscal}</div>
                             </div>
                         </div>
