@@ -25,7 +25,7 @@ function Menu({type, name}) {
         Auth.getUserAuthenticated()
         .then((user) => {
             console.log(user)
-            setUsuario(user.data)
+            setUsuario(user.data.user)
         }).catch((error) => {
             navigate('/login')
             console.log(error)
@@ -38,7 +38,7 @@ function Menu({type, name}) {
 
             <img src={LogoMenu} className="logo-menu" />
 
-            <p className='nome-usuario' style={{'fontWeight': 800}}>{usuario.nome}</p>
+            <p className='nome-usuario' style={{'fontWeight': 800}}>{usuario.name}</p>
 
             <NavLink className="item-menu"  to="../inicio/">
                 Página Inicial
@@ -48,10 +48,10 @@ function Menu({type, name}) {
                 Formulário
             </NavLink>
 
-            {usuario.papel == "master" || usuario.papel == "controle" ?  <NavLink className="item-menu"  to="../relatorio/">Relatório</NavLink> : <div></div>}
+            {usuario.role == "Master" || usuario.papel == "Controle" ?  <NavLink className="item-menu"  to="../relatorio/">Relatório</NavLink> : <div></div>}
            
 
-            {usuario.papel == "master"?   <NavLink className="item-menu"  to="../controle/" >Controle</NavLink> : <div></div>}
+            {usuario.papel == "Master"?   <NavLink className="item-menu"  to="../controle/" >Controle</NavLink> : <div></div>}
 
             <NavLink className="item-menu sair"  onClick={deslogar}>
                 Sair

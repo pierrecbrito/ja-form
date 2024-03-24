@@ -20,12 +20,12 @@ function Login() {
       Auth.login(email, senha)
         .then(result => {
           console.log(result)
-          let token = result.data.authToken
+          let token = result.data.access
           localStorage.setItem('token', token)
           navigate("/inicio");//Em caso de sucesso
         }).catch( error => {
           console.log(error)
-          notificarErroDeLogin(error.message)//Em caso de erro
+          notificarErroDeLogin(error.detail)//Em caso de erro
         })
   }
 

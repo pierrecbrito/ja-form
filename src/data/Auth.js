@@ -1,4 +1,5 @@
 import axios from "axios";
+import { URL_API } from "./Api";
 
 class Auth {
     /**
@@ -6,8 +7,8 @@ class Auth {
      */
     constructor() {}
 
-    static async login(email, senha) {
-        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:pBK6sn-v/auth/login', {
+    static login(email, senha) {
+        return axios.post(`${URL_API}/auth/signin/`, {
             'email': email,
             'password': senha
         })
@@ -26,15 +27,15 @@ class Auth {
         return localStorage.getItem('token') != undefined && localStorage.getItem('token') != null
     }
     
-    static async getUserAuthenticated() {
-        return axios.get('https://x8ki-letl-twmt.n7.xano.io/api:pBK6sn-v/auth/me', {
+    static getUserAuthenticated() {
+        return axios.get(`${URL_API}/auth/user/`, {
             headers: {
                 'Authorization': `Bearer ${this.getToken()}`,
             }
         })
     }
 
-    static async createUser(nome, email, senha) {
+    static createUser(nome, email, senha) {
         return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:pBK6sn-v/auth/signup',
             {
                 "email": email,
@@ -48,8 +49,8 @@ class Auth {
         })
     }
 
-    static async getAllUsers() {
-        return axios.get('https://x8ki-letl-twmt.n7.xano.io/api:pBK6sn-v/user', {
+    static getAllUsers() {
+        return axios.get(`${URL_API}/auth/users/`, {
             headers: {
                 'Authorization': `Bearer ${this.getToken()}`,
             }
