@@ -28,7 +28,13 @@ class TabelaDocumentos extends React.Component {
     }   
 
     componentDidMount() {
+        Documentos.listarTodosDocumentos().then((result) => {
+            let documentosDeInstalacao = result.data.documentos_instalacao
+            let documentosDePosVenda = result.data.documentos_pos_venda
+            this.setState({documentos: documentosDeInstalacao.concat(documentosDePosVenda)})
+        })
 
+        /*
         Documentos.listInstalacoes()
             .then(documentosDeInstalacao => {
                 Documentos.listPosVendas()
@@ -40,12 +46,14 @@ class TabelaDocumentos extends React.Component {
                     })
                 
             })
+        */
         
     }
 
     listandoDocumentos() {
         let lista = []
-        this.state.documentos.forEach((documento) => lista.push(documento.parceiros != undefined ? <LinhaInstalacao  documento={documento}/> : <LinhaPV documento={documento}/>))
+        console.log('Documentos recebidos', this.state.documentos)
+        this.state.documentos.forEach((documento) => lista.push(documento.nota_fiscal != undefined ? <LinhaInstalacao  documento={documento}/> : <LinhaPV documento={documento}/>))
         return lista
     }
 

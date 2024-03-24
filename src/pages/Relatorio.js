@@ -8,15 +8,8 @@ import Hamburger from '../menu.svg'
 import Menu from '../components/Menu';
 import $ from 'jquery'
 import Card from '../components/Card';
-import TableProdutos from '../components/TableProdutos';
-import KMPrice from '../components/KMPrice';
-import Modal from 'react-modal';
 import React from 'react';
-import ModalCadastroDeProduto from '../components/ModalCadastroProduto';
-import Produtos from '../data/Produtos';
 import Configuracao from '../data/Configuracoes';
-import Chart from 'react-apexcharts'
-import ListaDocumentos from '../components/ListaDocumentos';
 import Input from '../components/Input';
 import ListaFiltroDocumento from '../components/ListaFiltroDocumento';
 import ListaDeUsuarios from '../components/ListaDeUsuarios';
@@ -25,31 +18,14 @@ import TabelaDocumentos from '../components/TabelaDocumentos';
 function Relatorio() {
   const configuracao = new Configuracao()
 
-  const [modalCadastroIsOpen, setIsOpen] = React.useState(false);
-  const [valorKM, setValorKM] = React.useState(0);
-  const [atualizarTabela, setAtualizarTabela] = React.useState(false);
-  const [series, setSeries] = React.useState([44, 55, 41, 17, 15])
-  const [labels, setLabels] = React.useState(['Selenium', 'Selenium PRO', 'Titanium', 'Titanium Eletric', 'Selenium Eletric'])
-  const [options, setOptions] = React.useState({labels: labels})
   const [totalGeral, setTotalGeral] = React.useState(0)
   const [comissaoTotal, setComissaoTotal] = React.useState(0)
   const [filtro, setFiltro] = React.useState({tipo: 'Todos'})
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
   const openMenu = () => {
     $('.menu').animate({right: 0})
   }
-  
-  if(valorKM == 0){
-    configuracao.getValorDoKM().then((valor) => setValorKM(valor))
-  }
+
 
   const filtros = () => {
     return (

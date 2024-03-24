@@ -51,7 +51,7 @@ function Menu({type, name}) {
             {usuario.role == "Master" || usuario.papel == "Controle" ?  <NavLink className="item-menu"  to="../relatorio/">Relatório</NavLink> : <div></div>}
            
 
-            {usuario.papel == "Master"?   <NavLink className="item-menu"  to="../controle/" >Controle</NavLink> : <div></div>}
+            {usuario.role == "Master"?   <NavLink className="item-menu"  to="../controle/" >Controle</NavLink> : <div></div>}
 
             <NavLink className="item-menu sair"  onClick={deslogar}>
                 Sair
