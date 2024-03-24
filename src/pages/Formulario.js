@@ -80,10 +80,9 @@ class Formulario extends React.Component {
                 usuario: this.state.usuario,
             }
 
-            console.log('Novo Documento', novoDocumento)
-
             Documentos.salvarDocumento(novoDocumento)
                 .then((result) => {
+                    console.log("DOCUMENTO SALVO", result.data)
                     this.notificarDocumentoEnviado()
                 })
         }

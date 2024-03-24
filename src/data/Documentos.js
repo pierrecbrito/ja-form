@@ -1,6 +1,7 @@
 import { Client, Databases, Query, ID } from "appwrite";
 import Auth from './Auth'
 import axios from "axios";
+import { URL_API } from "./Api";
 
 class Documentos {
 
@@ -178,26 +179,20 @@ class Documentos {
     }
 
 
-    /* Xano Client: */
-    static async createDocInfo(distancia, horas,valorKM, valorHora, total, totalHoras, totalKMs) {
-        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:GeB5wpvs/info_adicionais', {
-            "distancia": distancia,
-            "horas": horas,
-            "valorKM": valorKM,
-            "valorHora": valorHora,
-            "total": total,
-            "totalHoras": totalHoras,
-            "totalKMs": totalKMs
-        },{
-            headers: {
-                'Authorization': `Bearer ${Auth.getToken()}`,
-            }
+
+    static createDocInfo(distancia, horas,valorKM, valorHora, total) {
+        return ({
+            "distancia": parseFloat(distancia),
+            "horas": parseFloat(horas),
+            "valor_km": valorKM,
+            "valor_hora": valorHora,
+            "total": total
         })
     }
 
     /* Xano Client: */
-    static async createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, total, comissao, user_id, info_adicionais_id) {
-        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:GeB5wpvs/cabecalho', 
+    static createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, total, comissao, distancia, horas, valorKM, valorHora, totalInfoAdicionais) {
+        return(
             {
                 "nome": nome,
                 "cnpj": cnpj,
@@ -207,105 +202,93 @@ class Documentos {
                 "cidade": cidade,
                 "telefone": telefone,
                 "total": total,
-                "comissao": comissao,
-                "user_id": user_id,
-                "aprovado": "1",
-                "info_adicionais_id": info_adicionais_id
-            },{
-            headers: {
-                'Authorization': `Bearer ${Auth.getToken()}`,
+                "comissao": parseFloat(comissao),
+                "informacoes_adicionais": this.createDocInfo(distancia, horas, valorKM, valorHora, totalInfoAdicionais)
             }
-        })
+        )
     }
 
     /* Xano Client: */
-    static async createDocInstalacao(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total, cabecalho, parceiros) {
-        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:GeB5wpvs/instalacoes', 
+    static createDocInstalacao(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total,  parceiros) {
+        return (
             {
                 "maquina": maquina,
-                "quantLinhas": quantLinhas,
-                "numeroMaquina": numeroMaquina,
-                "maquinaNova": maquinaNova,
-                "faturadoRevenda": faturadoRevenda,
-                "produto_id": produto_id,
-                "servicosExecutados": servicosExecutados,
-                "testesRealizados": testesRealizados,
+                "quantidade_linhas": parseInt(quantLinhas),
+                "numero_maquina": numeroMaquina,
+                "maquina_nova": maquinaNova,
+                "faturado_revenda": faturadoRevenda,
+                "produto": produto_id,
+                "servicos_executados": servicosExecutados,
+                "testes_realizados": testesRealizados,
                 "dono": dono,
-                "notaFiscal": notaFiscal,
-                "valorProduto": valorProduto,
+                "nota_fiscal": notaFiscal,
+                "valor_produto": valorProduto,
                 "total": total,
-                "cabecalho_id": cabecalho,
                 "parceiros": parceiros
-            },{
-            headers: {
-                'Authorization': `Bearer ${Auth.getToken()}`,
             }
-        })
+        )
     }
 
-    static async createDocPosVenda(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, valorProduto, total, cabecalho) {
-        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:GeB5wpvs/posvendas', 
+    static createDocPosVenda(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, valorProduto, total) {
+        return (
             {
                 "maquina": maquina,
-                "quantLinhas": quantLinhas,
-                "numeroMaquina": numeroMaquina,
-                "maquinaNova": maquinaNova,
-                "faturadoRevenda": faturadoRevenda,
-                "produto_id": produto_id,
-                "servicosExecutados": servicosExecutados,
-                "testesRealizados": testesRealizados,
-                "dono": dono,
-                "valorProduto": valorProduto,
-                "total": total,
-                "cabecalho_id": cabecalho,
-            },{
-            headers: {
-                'Authorization': `Bearer ${Auth.getToken()}`,
+                "quantidade_linhas": parseInt(quantLinhas),
+                "numero_maquina": numeroMaquina,
+                "maquina_nova": maquinaNova,
+                "faturado_revenda": faturadoRevenda,
+                "produto": produto_id,
+                "servicos_executados": servicosExecutados,
+                "testes_realizados": testesRealizados,
+                "valor_produto": valorProduto,
+                "total": total
             }
-        })
+        )
     }
 
-    static async salvarDocumento({nome, cnpj, cpf, endereco, cep, cidade, telefone, maquinaMontagem, quantLinhasMontagem, numeroMaquinaMontagem,
+    static salvarDocumento({nome, cnpj, cpf, endereco, cep, cidade, telefone, maquinaMontagem, quantLinhasMontagem, numeroMaquinaMontagem,
         maquinaNovaMontagem,faturadoRevendaMontagem,produto,servicosExecutadosMontagem,testeRealizadosMontagem,
         parceiros,notaFiscal,  maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV,
         servicosExecutadosPV, testeRealizadosPV, distancia, horasTrabalhadas,  
         valorDoKM, valorDaHora, totalInstalacao, totalPV, totalDistancia, totalHorasTrabalhadas, totalDocumento,
         comissao, valorProdutoPV, valorProdutoMontagem, usuario}) {
 
-        let quantidadeDeLinhas = parseInt(quantLinhasMontagem)    
-        let quantidadeDeLinhasPV = parseInt(quantLinhasPV)    
-        let distaciaEmInteiro = parseInt(distancia)
-        let horasTrabalhasEmInteiro = parseInt(horasTrabalhadas)
-
+        let cabecalho = this.createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, totalDocumento, comissao, distancia, horasTrabalhadas, valorDoKM, valorDaHora, totalHorasTrabalhadas + totalDistancia)
         
-        const todoDocumento = {nome, cnpj, cpf, endereco, cep, cidade, telefone, maquinaMontagem, quantLinhasMontagem: quantidadeDeLinhas, numeroMaquinaMontagem,
-            maquinaNovaMontagem,faturadoRevendaMontagem,produto,servicosExecutadosMontagem,testeRealizadosMontagem,
-            parceiros,notaFiscal, maquinaPV, quantLinhasPV: quantidadeDeLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV,
-            servicosExecutadosPV, testeRealizadosPV, distancia: distaciaEmInteiro, horasTrabalhadas: horasTrabalhasEmInteiro,  valorDoKM, valorDaHora, 
-            totalInstalacao, totalPV, totalDistancia, totalHorasTrabalhadas, totalDocumento, comissao, valorProdutoPV, valorProdutoMontagem}
-        
-        let colaboradoes = parceiros
-
-        let docInfo = await this.createDocInfo(distancia, horasTrabalhadas, valorDoKM, valorDaHora, totalHorasTrabalhadas + totalDistancia, totalHorasTrabalhadas, totalDistancia)
-        let cabecalho = await this.createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, totalDocumento, comissao, usuario.id, docInfo.data.id)
-
-        
+        let documentosInstalacoes = []
+  
         if(produto != '' && parseFloat(totalInstalacao) > 0) {
             for (var i = 0; i < parceiros.length; i++) {
-                //maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total, cabecalho, parceiros
-                await this.createDocInstalacao(maquinaMontagem, quantLinhasMontagem, numeroMaquinaMontagem,
-                    maquinaNovaMontagem, faturadoRevendaMontagem, produto, servicosExecutadosMontagem, testeRealizadosMontagem, parceiros[i], notaFiscal, valorProdutoMontagem, totalInstalacao, cabecalho.data.id, parceiros).then(resultado => console.log("Inst",resultado))
+                //maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total, parceiros
+                documentosInstalacoes.push(this.createDocInstalacao(maquinaMontagem, quantLinhasMontagem, numeroMaquinaMontagem,
+                    maquinaNovaMontagem, faturadoRevendaMontagem, produto, servicosExecutadosMontagem, testeRealizadosMontagem, parceiros[i], 
+                    notaFiscal, valorProdutoMontagem, totalInstalacao, parceiros))
             }
         }
 
-        //maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total, cabecalho, parceiros
+        let pv = null
         if(produtoPV != '' && parseFloat(totalPV) > 0) {
-            let pv = await this.createDocPosVenda(maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV, servicosExecutadosPV, testeRealizadosPV, usuario.id, valorProdutoPV, totalPV, cabecalho.data.id)
+           pv = this.createDocPosVenda(maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV, servicosExecutadosPV, testeRealizadosPV, valorProdutoPV, totalPV)
         }
 
-        //let docInfo = await this.salvarDocumentoInfo({distancia, horas: horasTrabalhasEmInteiro, valorHora: valorDaHora, valorKM: valorDoKM, totalDistancia: totalDistancia, cabecalho: cabecalho.$id, totalHorasTrabalhadas}).then(resultado => console.log("Info", resultado))
+        const documentoCompleto = {
+                "documento": {
+                    "cabecalho": cabecalho,
+                    "documentos_instalacao": documentosInstalacoes,
+                    "documento_pos_venda": pv
+                }
+        }
+
+        console.log("DOCUMENTO ENVIADO", documentoCompleto)
         
-        return {docInfo, cabecalho}
+        return axios.post(`${URL_API}/documents/`, documentoCompleto ,
+            {
+                headers: {
+                    'Authorization': `Bearer ${Auth.getToken()}`,
+                }
+            }
+        )
+        
     }
 
     static async listInstalacoes() {
