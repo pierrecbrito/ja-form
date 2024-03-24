@@ -14,6 +14,8 @@ import Input from '../components/Input';
 import ListaFiltroDocumento from '../components/ListaFiltroDocumento';
 import ListaDeUsuarios from '../components/ListaDeUsuarios';
 import TabelaDocumentos from '../components/TabelaDocumentos';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Relatorio() {
   const configuracao = new Configuracao()
@@ -25,23 +27,29 @@ function Relatorio() {
   //Para filtrar
   const [usuario, setUsuario] = React.useState('Todos')
   const [tipoDocumento, setTipoDocumento] = React.useState('Todos')
+  const [dataInicial, setDataInicial] = React.useState(new Date('2024-01-02'))
+  const [dataFinal, setDataFinal] = React.useState(new Date())
 
   const openMenu = () => {
     $('.menu').animate({right: 0})
   }
 
-
   const filtros = () => {
     return (
       <div className='filtros'>
         <div className='filtro-intervalo'>
-          <Input className="filtro" type='date' name="Início" value={new Date()}/>
-          <Input type='date' name="Fim" value={new Date()} style={{'display': 'inline-block'}}/>
+          <div class="input-container" style={{'min-width': "47.7%"}}>
+            <label style={{'display': 'block'}}>Data inicial:</label>
+            <DatePicker selected={dataInicial} onChange={(date) => setDataInicial(date)} dateFormat="dd/MM/yyyy"/>
+          </div>
+          <div class="input-container" style={{'min-width': "47.7%"}}>
+            <label style={{'display': 'block'}}>Data final:</label>
+            <DatePicker selected={dataFinal} onChange={(date) => setDataFinal(date)} dateFormat="dd/MM/yyyy"/>
+          </div>
         </div>
         
         <ListaFiltroDocumento value={tipoDocumento} onChange={(e) => {setTipoDocumento(e.value)}}/>
         <ListaDeUsuarios value={usuario} onChange={(e) => { setUsuario(e.value)}}/>
-        <Button text="Filtar" style={{'margin-left': '10px'}}/>
       </div>
     )
   }
@@ -65,7 +73,7 @@ function Relatorio() {
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: {totalGeral.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão total: {comissaoTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
             </div>
-            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario} tipoDocumento={tipoDocumento}/>
+            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario} tipoDocumento={tipoDocumento} dataInicial={dataInicial} dataFinal={dataFinal}/>
            
         </div>
        

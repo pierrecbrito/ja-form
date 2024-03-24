@@ -22,7 +22,7 @@ function ListaDeUsuarios({name="Usuário:", value, onChange}) {
     
     
     return (
-        <div class="input-container" style={{'max-width': '500px'}}>
+        <div class="input-container" style={{'max-width': '500px', 'display': 'inline-block', 'min-width': '47.7%', 'margin-left': '18px'}}>
             <label>{name}</label>
             <Select options={options} onChange={onChange} defaultValue={[{label: 'Todos', value: 'Todos'}]}/>
         </div>

@@ -43,23 +43,36 @@ class TabelaDocumentos extends React.Component {
     listandoDocumentos() {
         let lista = []
         let listaDeDocumentoFiltrados = []
+
         
+        this.props.dataInicial.setHours(0)
+        this.props.dataInicial.setMinutes(0)
+        this.props.dataInicial.setSeconds(0)
+        
+        this.props.dataFinal.setHours(23)
+        this.props.dataFinal.setMinutes(59)
+        this.props.dataFinal.setSeconds(59)
+
         this.state.documentos.forEach((documento) => {
             if(documento.nota_fiscal != undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'Instalação')) {
                 if(documento.dono.id == this.props.usuario || this.props.usuario == 'Todos') {
-                    lista.push(<LinhaInstalacao  documento={documento}/>)
-                    listaDeDocumentoFiltrados.push(documento)
+                    if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
+                        lista.push(<LinhaInstalacao  documento={documento}/>)
+                        listaDeDocumentoFiltrados.push(documento)
+                    }
                 }
             } else {
                 if(documento.nota_fiscal == undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'PV')) {
                     if(documento.documento.cabecalho.usuario_criador.id == this.props.usuario || this.props.usuario == 'Todos') {
-                        lista.push(<LinhaPV documento={documento}/>)
-                         listaDeDocumentoFiltrados.push(documento)
+                        if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
+                            lista.push(<LinhaPV documento={documento}/>)
+                            listaDeDocumentoFiltrados.push(documento)
+                        }
                     }
                 }
             }
         })
-        
+
         //Atualiza valores gerais do relatório
         this.props.setComissaoTotal(listaDeDocumentoFiltrados.filter(d => d.nota_fiscal != undefined).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
         let cabecalhosContabilizados = []

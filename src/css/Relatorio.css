@@ -28,3 +28,7 @@
     min-width: 240px;
 }
 
+.react-datepicker-wrapper {
+    width: 100%;
+}
+

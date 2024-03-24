@@ -5,6 +5,7 @@ import ReactModal from 'react-modal';
 import '../css/CardDocumento.css'
 import Expand2 from '../maximize-2.svg'
 import Documentos from '../data/Documentos';
+import toast, { Toaster } from 'react-hot-toast';
 
 const customStyles = {
     content: {
@@ -50,6 +51,10 @@ function LinhaInstalacao({documento}) {
 
         setAprovado(!aprovado)
         setReloadNecessary(true)
+
+        if(aprovado) {
+            notificarEmailEnviado()
+        }
     }
 
     useEffect(() => {
@@ -93,7 +98,30 @@ function LinhaInstalacao({documento}) {
             )
         }
     }
-    
+
+    const notificarEmailEnviado = (erro) => {
+        toast('E-mail enviado ao verificador.', {
+            duration: 5000,
+            position: 'bottom-center',
+          
+            // Styling
+            style: {
+                boxShadow: '0 1rem 3rem rgba(0,0,0,.175) !important',
+                fontSize: '14px'
+            },
+            className: '',
+          
+            // Custom Icon
+            icon: '✉️',
+          
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: '#000',
+              secondary: '#fff',
+            },
+        });
+      } 
+      
     return (
         <tr class="linha-documento" >
             <td className='coluna-documento'  style={{'padding': '5px'}}>{statusReadOnly()}</td>
@@ -167,6 +195,7 @@ function LinhaInstalacao({documento}) {
                         <div style={{'text-align': 'right', 'marginTop': '10px'}}>
                             <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: {documento.documento.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
                         </div>
+                        <Toaster/>
                     </div>
                 </main>
         
