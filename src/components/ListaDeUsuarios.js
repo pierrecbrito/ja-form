@@ -5,14 +5,18 @@ import makeAnimated from 'react-select/animated';
 import { useEffect } from 'react';
 import Auth from '../data/Auth';
 
-function ListaDeUsuarios({name="Cadastrado por:", value, onChange}) {
+function ListaDeUsuarios({name="Usuário:", value, onChange}) {
 
     const [options, setOptions] = useState([])
     
     useEffect(() => {
         Auth.getAllUsers().then((info) => {
             let todosColaboradores = info.data.users//.filter(usuarios => usuarios.role == 'Colaborador')
-            setOptions(todosColaboradores.map(colaborador => {return {label: colaborador.name, value: colaborador.id}}))
+            let colaboradores = [{label: 'Todos', value: 'Todos'}]
+
+            todosColaboradores = todosColaboradores.map(colaborador => {return {label: colaborador.name, value: colaborador.id}})
+            
+            setOptions(colaboradores.concat(todosColaboradores))
         })
     }, []);
     
@@ -20,7 +24,7 @@ function ListaDeUsuarios({name="Cadastrado por:", value, onChange}) {
     return (
         <div class="input-container" style={{'max-width': '500px'}}>
             <label>{name}</label>
-            <Select options={options} onChange={onChange} defaultValue={[options[0]]}/>
+            <Select options={options} onChange={onChange} defaultValue={[{label: 'Todos', value: 'Todos'}]}/>
         </div>
     );
 }

@@ -21,7 +21,10 @@ function Relatorio() {
   const [totalGeral, setTotalGeral] = React.useState(0)
   const [comissaoTotal, setComissaoTotal] = React.useState(0)
   const [filtro, setFiltro] = React.useState({tipo: 'Todos'})
-  const [usuario, setUsuario] = React.useState(null)
+
+  //Para filtrar
+  const [usuario, setUsuario] = React.useState('Todos')
+  const [tipoDocumento, setTipoDocumento] = React.useState('Todos')
 
   const openMenu = () => {
     $('.menu').animate({right: 0})
@@ -36,7 +39,7 @@ function Relatorio() {
           <Input type='date' name="Fim" value={new Date()} style={{'display': 'inline-block'}}/>
         </div>
         
-        <ListaFiltroDocumento />
+        <ListaFiltroDocumento value={tipoDocumento} onChange={(e) => {setTipoDocumento(e.value)}}/>
         <ListaDeUsuarios value={usuario} onChange={(e) => { setUsuario(e.value)}}/>
         <Button text="Filtar" style={{'margin-left': '10px'}}/>
       </div>
@@ -62,7 +65,7 @@ function Relatorio() {
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: {totalGeral.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão total: {comissaoTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
             </div>
-            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario}/>
+            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario} tipoDocumento={tipoDocumento}/>
            
         </div>
        

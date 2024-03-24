@@ -45,22 +45,27 @@ class TabelaDocumentos extends React.Component {
         let listaDeDocumentoFiltrados = []
         
         this.state.documentos.forEach((documento) => {
-            if(documento.nota_fiscal != undefined) {
-                if(documento.dono.id == this.props.usuario || this.props.usuario == null) {
+            if(documento.nota_fiscal != undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'Instalação')) {
+                if(documento.dono.id == this.props.usuario || this.props.usuario == 'Todos') {
                     lista.push(<LinhaInstalacao  documento={documento}/>)
                     listaDeDocumentoFiltrados.push(documento)
                 }
             } else {
-                if(documento.documento.cabecalho.usuario_criador.id == this.props.usuario || this.props.usuario == null) {
-                    lista.push(<LinhaPV documento={documento}/>)
-                     listaDeDocumentoFiltrados.push(documento)
+                if(documento.nota_fiscal == undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'PV')) {
+                    if(documento.documento.cabecalho.usuario_criador.id == this.props.usuario || this.props.usuario == 'Todos') {
+                        lista.push(<LinhaPV documento={documento}/>)
+                         listaDeDocumentoFiltrados.push(documento)
+                    }
                 }
             }
         })
+        
         //Atualiza valores gerais do relatório
-        this.props.setComissaoTotal(listaDeDocumentoFiltrados.reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
+        this.props.setComissaoTotal(listaDeDocumentoFiltrados.filter(d => d.nota_fiscal != undefined).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
         let cabecalhosContabilizados = []
         this.props.setTotalGeral(listaDeDocumentoFiltrados.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0) )
+        
+        
         return lista
     }
 
