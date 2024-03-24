@@ -43,7 +43,6 @@ class TabelaDocumentos extends React.Component {
     listandoDocumentos() {
         let lista = []
         let listaDeDocumentoFiltrados = []
-
         
         this.props.dataInicial.setHours(0)
         this.props.dataInicial.setMinutes(0)
@@ -53,7 +52,13 @@ class TabelaDocumentos extends React.Component {
         this.props.dataFinal.setMinutes(59)
         this.props.dataFinal.setSeconds(59)
 
-        this.state.documentos.forEach((documento) => {
+        let documentoASeremAdicionadosEmOrdem = [...this.state.documentos]//Para não mexer no State
+        documentoASeremAdicionadosEmOrdem.sort(function(a,b) {
+            return new Date(a.documento.cabecalho.criado_em).getTime() - new Date(b.documento.cabecalho.criado_em).getTime()
+        })
+
+        //Itens de tabela e suas filtragens
+        documentoASeremAdicionadosEmOrdem.forEach((documento) => {
             if(documento.nota_fiscal != undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'Instalação')) {
                 if(documento.dono.id == this.props.usuario || this.props.usuario == 'Todos') {
                     if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
@@ -72,6 +77,9 @@ class TabelaDocumentos extends React.Component {
                 }
             }
         })
+
+
+        console.log(listaDeDocumentoFiltrados)
 
         //Atualiza valores gerais do relatório
         this.props.setComissaoTotal(listaDeDocumentoFiltrados.filter(d => d.nota_fiscal != undefined).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
