@@ -175,6 +175,15 @@ class Documentos {
         })
     }
 
+    static toggleCabecalho(cabecalho_id) {
+        return axios.post(`${URL_API}/documents/cabecalho/${cabecalho_id}/`, 
+            {
+            headers: {
+                'Authorization': `Bearer ${Auth.getToken()}`,
+            }
+        })
+    }
+
     static async listInstalacoes() {
         return axios.get('https://x8ki-letl-twmt.n7.xano.io/api:GeB5wpvs/instalacoes', 
             {

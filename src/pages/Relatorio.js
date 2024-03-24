@@ -21,6 +21,7 @@ function Relatorio() {
   const [totalGeral, setTotalGeral] = React.useState(0)
   const [comissaoTotal, setComissaoTotal] = React.useState(0)
   const [filtro, setFiltro] = React.useState({tipo: 'Todos'})
+  const [usuario, setUsuario] = React.useState(null)
 
   const openMenu = () => {
     $('.menu').animate({right: 0})
@@ -36,7 +37,7 @@ function Relatorio() {
         </div>
         
         <ListaFiltroDocumento />
-        <ListaDeUsuarios />
+        <ListaDeUsuarios value={usuario} onChange={(e) => { setUsuario(e.value)}}/>
         <Button text="Filtar" style={{'margin-left': '10px'}}/>
       </div>
     )
@@ -58,10 +59,10 @@ function Relatorio() {
         <div className="row">
             <Card titulo="Filtro" body={filtros()}/>
             <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-              <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: R$ {totalGeral} </span>
-              <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão total: R$ {comissaoTotal} </span>
+              <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: {totalGeral.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
+              <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão total: {comissaoTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
             </div>
-            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal}/>
+            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario}/>
            
         </div>
        

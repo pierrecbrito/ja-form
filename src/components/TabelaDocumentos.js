@@ -32,28 +32,35 @@ class TabelaDocumentos extends React.Component {
             let documentosDeInstalacao = result.data.documentos_instalacao
             let documentosDePosVenda = result.data.documentos_pos_venda
             this.setState({documentos: documentosDeInstalacao.concat(documentosDePosVenda)})
-        })
 
-        /*
-        Documentos.listInstalacoes()
-            .then(documentosDeInstalacao => {
-                Documentos.listPosVendas()
-                    .then(documentosDePV => {
-                        let cabecalhosContabilizados = []
-                        this.props.setTotalGeral(documentosDeInstalacao.data.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b._cabecalho.id)) {cabecalhosContabilizados.push(b._cabecalho.id); return  a + b._cabecalho.total; } else { return a } }, 0) + documentosDePV.data.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b._cabecalho.id)) {cabecalhosContabilizados.push(b._cabecalho.id); return  a + b._cabecalho.total; } else { return a } }, 0))
-                        this.props.setComissaoTotal(documentosDeInstalacao.data.reduce((a, b) => a + b._cabecalho.comissao, 0))
-                        this.setState({documentos: documentosDeInstalacao.data.concat(documentosDePV.data)})
-                    })
-                
-            })
-        */
+            this.props.setComissaoTotal(documentosDeInstalacao.reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
+            let cabecalhosContabilizados = []
+            this.props.setTotalGeral(documentosDeInstalacao.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0) + documentosDePosVenda.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0))
+        })
         
     }
 
     listandoDocumentos() {
         let lista = []
-        console.log('Documentos recebidos', this.state.documentos)
-        this.state.documentos.forEach((documento) => lista.push(documento.nota_fiscal != undefined ? <LinhaInstalacao  documento={documento}/> : <LinhaPV documento={documento}/>))
+        let listaDeDocumentoFiltrados = []
+        
+        this.state.documentos.forEach((documento) => {
+            if(documento.nota_fiscal != undefined) {
+                if(documento.dono.id == this.props.usuario || this.props.usuario == null) {
+                    lista.push(<LinhaInstalacao  documento={documento}/>)
+                    listaDeDocumentoFiltrados.push(documento)
+                }
+            } else {
+                if(documento.documento.cabecalho.usuario_criador.id == this.props.usuario || this.props.usuario == null) {
+                    lista.push(<LinhaPV documento={documento}/>)
+                     listaDeDocumentoFiltrados.push(documento)
+                }
+            }
+        })
+        //Atualiza valores gerais do relatório
+        this.props.setComissaoTotal(listaDeDocumentoFiltrados.reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
+        let cabecalhosContabilizados = []
+        this.props.setTotalGeral(listaDeDocumentoFiltrados.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0) )
         return lista
     }
 

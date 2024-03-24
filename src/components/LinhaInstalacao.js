@@ -4,6 +4,7 @@ import Expand from '../maximize-2.svg'
 import ReactModal from 'react-modal';
 import '../css/CardDocumento.css'
 import Expand2 from '../maximize-2.svg'
+import Documentos from '../data/Documentos';
 
 const customStyles = {
     content: {
@@ -39,9 +40,46 @@ function LinhaInstalacao({documento}) {
     };
 
     const [showModal, setShowModal] = useState(false)
+    const [aprovado, setAprovado] = useState(true)
+    const [reloadNecessary, setReloadNecessary] = useState(false)
+
+    const toggleCabecalho = () => {
+        Documentos.toggleCabecalho(documento.documento.cabecalho.id).then(result => {
+            console.log(result)
+        })
+
+        setAprovado(!aprovado)
+        setReloadNecessary(true)
+    }
+
+    useEffect(() => {
+        setAprovado(documento.documento.cabecalho.aprovado)
+    },[])
 
     const status = () => {
-        if(documento.documento.cabecalho.aprovado) {
+        if(aprovado) {
+            return (
+                <div style={{'text-align': 'center', 'font-size': '0.9rem'}}>
+                    <span style={{'padding': '0px', 'border-radius': '20rem', 'display': 'inline-block', 'border': '1px solid gray'}}>
+                        <span style={{'background-color': 'rgba(0, 99, 65, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Deferido</span>
+                        <span style={{'padding': '10px', 'border-radius': '20rem', 'display': 'inline-block', 'cursor': 'pointer'}} onClick={toggleCabecalho}>Indeferir</span>
+                    </span>
+                </div>
+            )
+        } else {
+            return (
+                <div style={{'text-align': 'center', 'font-size': '0.9rem'}}>
+                    <span style={{'padding': '0px', 'border-radius': '20rem', 'display': 'inline-block', 'border': '1px solid gray'}}>
+                        <span style={{'padding': '10px', 'border-radius': '20rem', 'display': 'inline-block', 'cursor': 'pointer'}} onClick={toggleCabecalho}>Deferir</span>
+                        <span style={{'background-color': 'rgba(145, 56, 49, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Indeferido</span>
+                    </span>
+                </div>
+            )
+        }
+    }
+
+    const statusReadOnly = () => {
+        if(aprovado) {
             return (
                 <div style={{'text-align': 'center', 'font-size': '0.9rem'}}>
                     <span style={{'background-color': 'rgba(0, 99, 65, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Deferido</span>
@@ -50,7 +88,7 @@ function LinhaInstalacao({documento}) {
         } else {
             return (
                 <div style={{'text-align': 'center', 'font-size': '0.9rem'}}>
-                    <span style={{'background-color': 'rgba(229, 9, 20, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Indeferido</span>
+                    <span style={{'background-color': 'rgba(145, 56, 49, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Indeferido</span>
                 </div>
             )
         }
@@ -58,12 +96,12 @@ function LinhaInstalacao({documento}) {
     
     return (
         <tr class="linha-documento" >
-            <td className='coluna-documento'  style={{'padding': '5px'}}>{status()}</td>
+            <td className='coluna-documento'  style={{'padding': '5px'}}>{statusReadOnly()}</td>
             <td className='coluna-documento' style={{'cursor': 'pointer'}}>{documento.documento.cabecalho.nome}</td>
             <td className='coluna-documento'>{new Date(documento.documento.cabecalho.criado_em).toLocaleDateString('pt-BR', formatOptions)}h</td>
             <td className='coluna-documento'>Instalação</td>
-            <td className='coluna-documento'>{documento.documento.cabecalho.usuario_criador.name}</td>
-            <td className='coluna-documento'>R$ {documento.documento.cabecalho.comissao}</td>
+            <td className='coluna-documento'>{documento.dono ? documento.dono.name :  documento.documento.cabecalho.usuario_criador.name}</td>
+            <td className='coluna-documento'>{documento.documento.cabecalho.comissao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
             <td className='coluna-documento'><img src={Expand2} style={{top: '15px', right: '15px', width: '1em', 'cursor': 'pointer'}} onClick={() => {setShowModal(true)}}/></td>
 
             <ReactModal 
@@ -74,7 +112,7 @@ function LinhaInstalacao({documento}) {
             >
                 <header className='cabecalho_modal'>
                     Documento
-                    <span className='btn-fechar-modal' onClick={() => {setShowModal(false)}}>X</span>
+                    <span className='btn-fechar-modal' onClick={() => {setShowModal(false); if(reloadNecessary) window.location.reload();}}>X</span>
                 </header>
                 <main className='body_modal' style={{maxHeight: '600px',overflow:'scroll'}}>
                     <div id="secoes-container">
@@ -101,10 +139,10 @@ function LinhaInstalacao({documento}) {
                                 <div className='info'>Deslocamento: {documento.documento.cabecalho.info_adicionais.distancia}km</div>
                                 <div className='info'>Horas trabalhadas: {documento.documento.cabecalho.info_adicionais.horas}h</div>
                                 <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: R$ {documento.documento.cabecalho.info_adicionais.total}</span>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: {documento.documento.cabecalho.info_adicionais.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                                 <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão: R$ {documento.documento.cabecalho.comissao}</span>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão: {documento.documento.cabecalho.comissao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +165,7 @@ function LinhaInstalacao({documento}) {
                             </div>
                         </div>
                         <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-                            <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: R$ {documento.documento.total} </span>
+                            <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: {documento.documento.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
                         </div>
                     </div>
                 </main>

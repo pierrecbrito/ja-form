@@ -11,7 +11,7 @@ function ListaDeUsuarios({name="Cadastrado por:", value, onChange}) {
     
     useEffect(() => {
         Auth.getAllUsers().then((info) => {
-            let todosColaboradores = info.data.users.filter(usuarios => usuarios.role == 'Colaborador')
+            let todosColaboradores = info.data.users//.filter(usuarios => usuarios.role == 'Colaborador')
             setOptions(todosColaboradores.map(colaborador => {return {label: colaborador.name, value: colaborador.id}}))
         })
     }, []);
