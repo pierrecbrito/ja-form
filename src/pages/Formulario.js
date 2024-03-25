@@ -73,7 +73,7 @@ class Formulario extends React.Component {
                 totalDistancia: this.getValorTotalDistancia(),
                 totalHorasTrabalhadas: this.getValorTotalHorasTrabalhadas(),
                 totalDocumento: this.getValorTotal(),
-                comissao: this.state.parceiros.length > 0 && this.getValorTotalInstalacao() > 0 ? (this.getComissao()/(this.state.parceiros.length+1)).toFixed(2) : 0,
+                comissao: this.state.parceiros.length > 0 && this.getValorTotalInstalacao() > 0 ? (this.getComissao()/(this.state.parceiros.length+1)).toFixed(2) : this.getComissao().toFixed(2),
                 valorProdutoPV: this.getValorPVDe(this.state.produtoPV),
                 valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
                 parceiros: this.state.parceiros.length > 0 ? [...this.state.allParceiros.filter(p => this.state.parceiros.includes(p.id)), this.state.usuario] : [this.state.usuario],
@@ -84,7 +84,10 @@ class Formulario extends React.Component {
                 .then((result) => {
                     console.log("DOCUMENTO SALVO", result.data)
                     this.notificarDocumentoEnviado()
-                })
+                }).catch((erro) => {
+                    let message = erro.response.data.detail
+                    this.notificarErro(message)
+                }) 
         }
 
     }
