@@ -106,7 +106,7 @@ class TabelaDocumentos extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.listandoDocumentos()}
+                    {this.listandoDocumentos().length > 0 ? this.listandoDocumentos() :  <tr><td colspan="7">Nenhum registro encontrado.</td></tr>}
                 </tbody>
             </table>
         );
