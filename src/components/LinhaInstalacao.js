@@ -46,7 +46,7 @@ function LinhaInstalacao({documento}) {
 
     const toggleCabecalho = () => {
         Documentos.toggleCabecalho(documento.documento.cabecalho.id).then(result => {
-            console.log(result)
+            //console.log(result)
         })
 
         setAprovado(!aprovado)

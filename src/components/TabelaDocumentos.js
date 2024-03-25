@@ -79,7 +79,7 @@ class TabelaDocumentos extends React.Component {
         })
 
 
-        console.log(listaDeDocumentoFiltrados)
+        //console.log(listaDeDocumentoFiltrados)
 
         //Atualiza valores gerais do relatório
         this.props.setComissaoTotal(listaDeDocumentoFiltrados.filter(d => d.nota_fiscal != undefined).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))

@@ -51,7 +51,6 @@ function Controle() {
     console.log(valorKM, valorHora)
     Configuracao.updateValorDoKM(parseFloat(`${valorKM}`.replace('R$', ""))).then(result => {
       Configuracao.updateValorDaHora(parseFloat(`${valorHora}`.replace('R$', ""))).then((resultado) => {
-        console.log(resultado, result)
         notificarValoresAtualizados()
       })
     })

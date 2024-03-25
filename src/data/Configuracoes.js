@@ -31,7 +31,6 @@ class Configuracao {
     }
 
     static updateValorDoKM(novoValor) {
-        console.log('novo valor de km', novoValor)
         return axios.put(`${URL_API}/config/2/`, {
             "value": novoValor,
         } , {
@@ -42,7 +41,6 @@ class Configuracao {
     }
 
     static updateValorDaHora(novoValor) {
-        console.log('novo valor de hora', novoValor)
         return axios.put(`${URL_API}/config/1/`, {
             "value": novoValor
         } , {
