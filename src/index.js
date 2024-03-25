@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SlideRoutes from 'react-slide-routes';
 import Controle from './pages/Controle';
 import MensagemInicial from './pages/MensagemInicial';
@@ -16,17 +16,17 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <BrowserRouter>
-    <SlideRoutes duration={600}>
-        
-        <Route path='login' element={<Login />} />
+    <Routes>
+        <Route path='/login' element={<Login />} />
         <Route element={<PrivateRoutes isAuthenticated={Auth.isAuthenticated()}/>}>
           <Route path="/" element={<MensagemInicial />} />
-          <Route path='inicio' element={<MensagemInicial />} />
-          <Route path='controle' element={<Controle />} />
-          <Route path='formulario' element={<Formulario />} />
-          <Route path='relatorio' element={<Relatorio />} />
+          <Route path='/inicio' element={<MensagemInicial />} />
+          <Route path='/controle' element={<Controle />} />
+          <Route path='/formulario' element={<Formulario />} />
+          <Route path='/relatorio' element={<Relatorio />} />
+          <Route render={() => <h1>404: page not found</h1>} />
         </Route>
-    </SlideRoutes>
+      </Routes>
   </BrowserRouter>
 );
 

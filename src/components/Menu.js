@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import Auth from '../data/Auth';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
-
+import {  Navigate } from 'react-router-dom'
 
 function Menu({type, name}) {
     const navigate = useNavigate()
@@ -18,7 +18,6 @@ function Menu({type, name}) {
 
     const deslogar = () => {
         Auth.logout()
-        window.location.reload()
     }
 
     useEffect(() => {
@@ -53,7 +52,7 @@ function Menu({type, name}) {
 
             {usuario.role == "Master"?   <NavLink className="item-menu"  to="../controle/" >Controle</NavLink> : <div></div>}
 
-            <NavLink className="item-menu sair"  onClick={deslogar}>
+            <NavLink className="item-menu sair" to="../login/"  onClick={deslogar}>
                 Sair
             </NavLink>
             

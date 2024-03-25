@@ -24,7 +24,7 @@ class Auth {
     }
 
     static isAuthenticated() {
-        return localStorage.getItem('token') != undefined && localStorage.getItem('token') != null
+        return localStorage.getItem('token') != undefined && localStorage.getItem('token') != null  && localStorage.getItem('token') != ''
     }
     
     static getUserAuthenticated() {

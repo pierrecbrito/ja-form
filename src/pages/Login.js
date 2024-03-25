@@ -16,16 +16,13 @@ function Login() {
   const [senha, setSenha] = useState('')
 
   const logar = () => {
-     
       Auth.login(email, senha)
         .then(result => {
-          console.log(result)
           let token = result.data.access
           localStorage.setItem('token', token)
           navigate("/inicio");//Em caso de sucesso
         }).catch( error => {
-          console.log(error)
-          notificarErroDeLogin(error.detail)//Em caso de erro
+          notificarErroDeLogin(error.response.data.detail)//Em caso de erro
         })
   }
 
