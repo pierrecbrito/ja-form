@@ -157,7 +157,7 @@ function LinhaInstalacao({documento}) {
                                 <div className='info'>Telefone: {documento.documento.cabecalho.telefone}</div>
                                 <div className='info'>Cadatrado por {documento.documento.cabecalho.usuario_criador.name} em {new Date(documento.documento.cabecalho.criado_em).toLocaleDateString('pt-BR', formatOptions)}h</div>
                                 <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: R$ {documento.documento.cabecalho.total}</span>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: R$ {documento.documento.cabecalho.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                             </div>
                         </div>

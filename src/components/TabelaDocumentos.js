@@ -54,7 +54,7 @@ class TabelaDocumentos extends React.Component {
 
         let documentoASeremAdicionadosEmOrdem = [...this.state.documentos]//Para não mexer no State
         documentoASeremAdicionadosEmOrdem.sort(function(a,b) {
-            return new Date(a.documento.cabecalho.criado_em).getTime() - new Date(b.documento.cabecalho.criado_em).getTime()
+            return new Date(b.documento.cabecalho.criado_em).getTime() - new Date(a.documento.cabecalho.criado_em).getTime()
         })
 
         //Itens de tabela e suas filtragens
