@@ -36,17 +36,13 @@ class Auth {
     }
 
     static createUser(nome, email, senha) {
-        return axios.post('https://x8ki-letl-twmt.n7.xano.io/api:pBK6sn-v/auth/signup',
+        return axios.post(`${URL_API}/auth/signup/`,
             {
                 "email": email,
                 "password": senha,
-                "nome": nome
+                "name": nome
             }
-        , {
-            headers: {
-                'Authorization': `Bearer ${this.getToken()}`,
-            }
-        })
+        )
     }
 
     static getAllUsers() {

@@ -34,19 +34,18 @@ class ModalCadastroUsuario extends React.Component {
 
         this.salvarUsuario= () => {
             //let valorMontagem = this.state.valorMontagem.toString().replace('R$', '')
-            console.log(this.state)
+      
             Auth.createUser(this.state.nome, this.state.email, this.state.senha)
                 .then((resposta) => {
-                    this.notificarUsuarioCadastrado()
+                    this.notificarUsuarioCadastrado(resposta.data.user.name)
                     this.props.closeModalFunc()
-                    window.location.reload()
                 })
         }
     }
 
     
-    notificarUsuarioCadastrado(){
-        toast('Usuário cadastrado com sucesso!', {
+    notificarUsuarioCadastrado(nomeUsuario){
+        toast(`Usuário ${nomeUsuario} cadastrado com sucesso!`, {
             duration: 5000,
             position: 'bottom-center',
           
