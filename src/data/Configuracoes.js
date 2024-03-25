@@ -30,11 +30,10 @@ class Configuracao {
         })
     }
 
-    static async updateValorDoKM(novoValor) {
-        return axios.patch('https://x8ki-letl-twmt.n7.xano.io/api:_HqzMVdn/configuracao_geral/1',{
-            "configuracao_geral_id": 1,
-            "nome": "valorKM",
-            "valor": novoValor
+    static updateValorDoKM(novoValor) {
+        console.log('novo valor de km', novoValor)
+        return axios.put(`${URL_API}/config/2/`, {
+            "value": novoValor,
         } , {
             headers: {
                 'Authorization': `Bearer ${Auth.getToken()}`,
@@ -42,23 +41,16 @@ class Configuracao {
         })
     }
 
-    static async updateValorDaHora(novoValor) {
-        return axios.patch('https://x8ki-letl-twmt.n7.xano.io/api:_HqzMVdn/configuracao_geral/2',{
-            "configuracao_geral_id": 2,
-            "nome": "valorHora",
-            "valor": novoValor
+    static updateValorDaHora(novoValor) {
+        console.log('novo valor de hora', novoValor)
+        return axios.put(`${URL_API}/config/1/`, {
+            "value": novoValor
         } , {
             headers: {
                 'Authorization': `Bearer ${Auth.getToken()}`,
             }
         })
     }
-
-    static async updateValoresDeServico(novoValorKM, novoValorHora) {
-        console.log('valores', novoValorHora, novoValorKM)
-        return Promise.all(Configuracao.updateValorDoKM(parseFloat(novoValorKM.replace('R$', ''))), Configuracao.updateValorDaHora(parseFloat(novoValorHora.replace('R$', ''))))
-    }
-
 
 }
 

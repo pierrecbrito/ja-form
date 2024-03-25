@@ -8,17 +8,23 @@ function TableProdutos({atualizarTabela, setAtualizarTabela}) {
   const [produtos, setProdutos] = useState('Carregando...')
 
   const atualizar = () => {
-    
-    Produtos.listarProdutos().then((response) => {
-        setProdutos(
-          response.data.map((produto) =>   //Constrói uma linha de tabela para cada produto no banco
-            <tr className='linha'>
-              <td>{produto.nome}</td>
-              <td>R$ {produto.preco_instalacao} </td>
-              <td>R$ {produto.preco_pv}</td>
-            </tr>
-        ))
+
+    Produtos.listarProdutos()
+    .then(result => { setProdutos(
+      result.data.produtos.map((produto) =>  {
+        return (
+          <tr className='linha'>
+            <td>{produto.name}</td>
+            <td>R$ {produto.price_setup} </td>
+            <td>R$ {produto.price_after_sales}</td>
+          </tr>
+        )
+      }))
+    }
+    ).catch((erro) => {
+      this.notificarErro(erro.response.data.detail)
     })
+    
   }
 
   useEffect(() => {

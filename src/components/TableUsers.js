@@ -9,11 +9,11 @@ function TableUsers({atualizarTabela, setAtualizarTabela}) {
   const atualizar = () => {
     Auth.getAllUsers().then((response) => {
         setUsuarios(
-          response.data.map((usuario) =>   //Constrói uma linha de tabela para cada produto no banco
+          response.data.users.map((usuario) =>   //Constrói uma linha de tabela para cada produto no banco
             <tr className='linha'>
-              <td>{usuario.nome}</td>
+              <td>{usuario.name}</td>
               <td>{usuario.email} </td>
-              <td>{usuario.papel}</td>
+              <td>{usuario.role}</td>
             </tr>
         ))
     })

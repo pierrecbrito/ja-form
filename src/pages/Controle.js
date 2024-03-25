@@ -48,9 +48,12 @@ function Controle() {
   }
 
   function atualizarValoresDeServicos() {
-    Configuracao.updateValorDoKM(parseFloat(valorKM.replace("R$", "")))
-    Configuracao.updateValorDaHora(parseFloat(valorHora.replace("R$", ""))).then((resultado) => {
-      notificarValoresAtualizados()
+    console.log(valorKM, valorHora)
+    Configuracao.updateValorDoKM(parseFloat(`${valorKM}`.replace('R$', ""))).then(result => {
+      Configuracao.updateValorDaHora(parseFloat(`${valorHora}`.replace('R$', ""))).then((resultado) => {
+        console.log(resultado, result)
+        notificarValoresAtualizados()
+      })
     })
     
   }
@@ -81,14 +84,9 @@ function Controle() {
     $('.menu').animate({right: 0})
   }
 
-  useEffect(() => {
-    Configuracao.getValores() //Busca valores no banco
-      .then((response) => {
-        setValorKM(response.data.filter(e => e.id == 1)[0].valor)
-        setValorHora(response.data.filter(e => e.id == 2)[0].valor)
-      }).catch((error) => {
-          console.log(error)
-      })
+  useEffect(() => { 
+    Configuracao.getValorKM().then(valor => setValorKM(valor.data.configs.value))
+    Configuracao.getValorHora().then(valor => setValorHora(valor.data.configs.value))
   },[])
   
 
