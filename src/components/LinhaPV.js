@@ -9,6 +9,7 @@ import Card from './Card';
 import '../css/CardDocumento.css'
 import Expand3 from '../maximize-2.svg'
 import Documentos from '../data/Documentos';
+import toast, { Toaster } from 'react-hot-toast';
 
 const customStyles = {
     content: {
@@ -44,7 +45,7 @@ function LinhaPV({documento}) {
     };
 
     const [showModal, setShowModal] = useState(false)
-    const [aprovado, setAprovado] = useState(true)
+    const [aprovado, setAprovado] = useState(null)
     const [reloadNecessary, setReloadNecessary] = useState(false)
 
     const toggleCabecalho = () => {
@@ -52,13 +53,42 @@ function LinhaPV({documento}) {
             //console.log(result)
         })
 
+        documento.documento.cabecalho.aprovado = !aprovado
+        console.log("status novo", documento.documento.cabecalho.aprovado)
         setAprovado(!aprovado)
         setReloadNecessary(true)
+
+        if(aprovado) {
+            notificarEmailEnviado()
+        }
     }
 
     useEffect(() => {
         setAprovado(documento.documento.cabecalho.aprovado)
-    },[])
+    })
+
+    const notificarEmailEnviado = (erro) => {
+        toast('E-mail enviado ao verificador.', {
+            duration: 5000,
+            position: 'bottom-center',
+          
+            // Styling
+            style: {
+                boxShadow: '0 1rem 3rem rgba(0,0,0,.175) !important',
+                fontSize: '14px'
+            },
+            className: '',
+          
+            // Custom Icon
+            icon: '✉️',
+          
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: '#000',
+              secondary: '#fff',
+            },
+        });
+      } 
 
     const status = () => {
         if(aprovado) {

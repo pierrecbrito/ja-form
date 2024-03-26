@@ -1,13 +1,12 @@
 import '../css/Input.css';
 import Select from 'react-select'
-import makeAnimated from 'react-select/animated';
 
-function ListaFiltroDocumento({name="Tipo de documento:", value, onChange}) {
+function ListaFiltroStatus({name="Status de documento:", value, onChange}) {
 
     const options = [
-        { value: 'Todos', label: 'Todos' },
-        { value: 'Instalação', label: 'Instalação' },
-        { value: 'PV', label: 'Pós-venda' },
+        { value: 'Qualquer', label: 'Qualquer' },
+        { value: 'Deferido', label: 'Deferido' },
+        { value: 'Indeferido', label: 'Indeferido' },
       ]
       
     
@@ -19,4 +18,4 @@ function ListaFiltroDocumento({name="Tipo de documento:", value, onChange}) {
     );
 }
 
-export default ListaFiltroDocumento;
+export default ListaFiltroStatus;

@@ -49,17 +49,19 @@ function LinhaInstalacao({documento}) {
             //console.log(result)
         })
 
+        documento.documento.cabecalho.aprovado = !aprovado
         setAprovado(!aprovado)
         setReloadNecessary(true)
 
         if(aprovado) {
             notificarEmailEnviado()
         }
+
     }
 
     useEffect(() => {
         setAprovado(documento.documento.cabecalho.aprovado)
-    },[])
+    })
 
     const status = () => {
         if(aprovado) {

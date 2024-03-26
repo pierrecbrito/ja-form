@@ -41,6 +41,7 @@ class TabelaDocumentos extends React.Component {
     }
 
     listandoDocumentos() {
+
         let lista = []
         let listaDeDocumentoFiltrados = []
         
@@ -62,16 +63,22 @@ class TabelaDocumentos extends React.Component {
             if(documento.nota_fiscal != undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'Instalação')) {
                 if(documento.dono.id == this.props.usuario || this.props.usuario == 'Todos') {
                     if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
-                        lista.push(<LinhaInstalacao  documento={documento}/>)
-                        listaDeDocumentoFiltrados.push(documento)
+                        if(this.props.statusDocumentos == 'Qualquer' || (documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Deferido') || (!documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Indeferido')) {
+                            console.log("documento", documento)
+                            lista.push(<LinhaInstalacao  documento={documento}/>)
+                            listaDeDocumentoFiltrados.push(documento)
+                        }
                     }
                 }
             } else {
                 if(documento.nota_fiscal == undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'PV')) {
                     if(documento.documento.cabecalho.usuario_criador.id == this.props.usuario || this.props.usuario == 'Todos') {
                         if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
-                            lista.push(<LinhaPV documento={documento}/>)
-                            listaDeDocumentoFiltrados.push(documento)
+                            if(this.props.statusDocumentos == 'Qualquer' || (documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Deferido') || (!documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Indeferido')) {
+                                console.log("documento", documento)
+                                lista.push(<LinhaPV documento={documento}/>)
+                                listaDeDocumentoFiltrados.push(documento)
+                            }
                         }
                     }
                 }

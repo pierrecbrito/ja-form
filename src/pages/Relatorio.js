@@ -16,6 +16,7 @@ import ListaDeUsuarios from '../components/ListaDeUsuarios';
 import TabelaDocumentos from '../components/TabelaDocumentos';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ListaFiltroStatus from '../components/ListaFiltroStatus';
 
 function Relatorio() {
   const configuracao = new Configuracao()
@@ -29,6 +30,7 @@ function Relatorio() {
   const [tipoDocumento, setTipoDocumento] = React.useState('Todos')
   const [dataInicial, setDataInicial] = React.useState(new Date('2024-01-02'))
   const [dataFinal, setDataFinal] = React.useState(new Date())
+  const [statusDocumentos, setStatusDocumentos] = React.useState('Qualquer')
 
   const openMenu = () => {
     $('.menu').animate({right: 0})
@@ -50,6 +52,7 @@ function Relatorio() {
         
         <ListaFiltroDocumento value={tipoDocumento} onChange={(e) => {setTipoDocumento(e.value)}}/>
         <ListaDeUsuarios value={usuario} onChange={(e) => { setUsuario(e.value)}}/>
+        <ListaFiltroStatus value={statusDocumentos} onChange={(e) => { setStatusDocumentos(e.value)}}/>
       </div>
     )
   }
@@ -73,7 +76,7 @@ function Relatorio() {
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: {totalGeral.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão total: {comissaoTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
             </div>
-            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario} tipoDocumento={tipoDocumento} dataInicial={dataInicial} dataFinal={dataFinal}/>
+            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario} tipoDocumento={tipoDocumento} dataInicial={dataInicial} dataFinal={dataFinal} statusDocumentos={statusDocumentos}/>
            
         </div>
        
