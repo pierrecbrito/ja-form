@@ -17,6 +17,7 @@ import TabelaDocumentos from '../components/TabelaDocumentos';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ListaFiltroStatus from '../components/ListaFiltroStatus';
+import Pagination from '../components/Pagination';
 
 function Relatorio() {
   const configuracao = new Configuracao()
@@ -31,6 +32,9 @@ function Relatorio() {
   const [dataInicial, setDataInicial] = React.useState(new Date('2024-01-02'))
   const [dataFinal, setDataFinal] = React.useState(new Date())
   const [statusDocumentos, setStatusDocumentos] = React.useState('Qualquer')
+  const [paginaAtual, setPaginaAtual] = React.useState(1)
+  const [quantidadeAtual, setQuantidadeAtual] = React.useState(1)
+
 
   const openMenu = () => {
     $('.menu').animate({right: 0})
@@ -76,8 +80,8 @@ function Relatorio() {
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: {totalGeral.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
               <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão total: {comissaoTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})} </span>
             </div>
-            <TabelaDocumentos setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario} tipoDocumento={tipoDocumento} dataInicial={dataInicial} dataFinal={dataFinal} statusDocumentos={statusDocumentos}/>
-           
+            <TabelaDocumentos paginaAtual={paginaAtual} quantidadeAtual={quantidadeAtual} setQuantidadeAtual={setQuantidadeAtual} setTotalGeral={setTotalGeral} setComissaoTotal={setComissaoTotal} usuario={usuario} tipoDocumento={tipoDocumento} dataInicial={dataInicial} dataFinal={dataFinal} statusDocumentos={statusDocumentos}/>
+            <Pagination paginaAtual={paginaAtual} setPaginaAtual={setPaginaAtual} quantidadeItens={quantidadeAtual}/>
         </div>
        
 

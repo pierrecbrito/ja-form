@@ -32,6 +32,8 @@ class TabelaDocumentos extends React.Component {
             let documentosDeInstalacao = result.data.documentos_instalacao
             let documentosDePosVenda = result.data.documentos_pos_venda
             this.setState({documentos: documentosDeInstalacao.concat(documentosDePosVenda)})
+            
+            this.props.setQuantidadeAtual(this.state.documentos.length)
 
             this.props.setComissaoTotal(documentosDeInstalacao.filter(d => d.documento.cabecalho.aprovado).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
             let cabecalhosContabilizados = []
@@ -58,13 +60,12 @@ class TabelaDocumentos extends React.Component {
             return new Date(b.documento.cabecalho.criado_em).getTime() - new Date(a.documento.cabecalho.criado_em).getTime()
         })
 
-        //Itens de tabela e suas filtragens
+    
         documentoASeremAdicionadosEmOrdem.forEach((documento) => {
             if(documento.nota_fiscal != undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'Instalação')) {
                 if(documento.dono.id == this.props.usuario || this.props.usuario == 'Todos') {
                     if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
                         if(this.props.statusDocumentos == 'Qualquer' || (documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Deferido') || (!documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Indeferido')) {
-                            console.log("documento", documento)
                             lista.push(<LinhaInstalacao  documento={documento}/>)
                             listaDeDocumentoFiltrados.push(documento)
                         }
@@ -75,7 +76,6 @@ class TabelaDocumentos extends React.Component {
                     if(documento.documento.cabecalho.usuario_criador.id == this.props.usuario || this.props.usuario == 'Todos') {
                         if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
                             if(this.props.statusDocumentos == 'Qualquer' || (documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Deferido') || (!documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Indeferido')) {
-                                console.log("documento", documento)
                                 lista.push(<LinhaPV documento={documento}/>)
                                 listaDeDocumentoFiltrados.push(documento)
                             }
@@ -85,7 +85,7 @@ class TabelaDocumentos extends React.Component {
             }
         })
 
-
+        this.props.setQuantidadeAtual(listaDeDocumentoFiltrados.length)
         //console.log(listaDeDocumentoFiltrados)
 
         //Atualiza valores gerais do relatório
@@ -93,8 +93,8 @@ class TabelaDocumentos extends React.Component {
         let cabecalhosContabilizados = []
         this.props.setTotalGeral(listaDeDocumentoFiltrados.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0) )
         
-        
-        return lista
+ 
+        return lista.filter((linha, index) => index < this.props.paginaAtual * 15 && index >= (this.props.paginaAtual == 1 ? 0 : (this.props.paginaAtual - 1) * 15))
     }
 
 

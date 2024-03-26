@@ -192,7 +192,7 @@ function LinhaInstalacao({documento}) {
                                 <div className='info'>Serviços executados: {documento.documento.servicos_executados}</div>
                                 <div className='info'>Testes realizados: {documento.documento.testes_realizados}</div>
                                 <div className='info'>Parceiros: {documento.parceiros.map(p => p.name).join(",")}</div>
-                                <div className='info'>Nota fiscal: {documento.nota_fiscal}</div>
+                                <div className='info'>Nota fiscal: <a target='_blank' href={`https://google.com/search?q=${documento.nota_fiscal}`} >{documento.nota_fiscal}</a></div>
                             </div>
                         </div>
                         <div style={{'text-align': 'right', 'marginTop': '10px'}}>
