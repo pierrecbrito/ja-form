@@ -154,6 +154,7 @@ function LinhaInstalacao({documento}) {
                                 <div className='info'>Endereço: {documento.documento.cabecalho.endereco}</div>
                                 <div className='info'>CEP: {documento.documento.cabecalho.cep}</div>
                                 <div className='info'>Cidade: {documento.documento.cabecalho.cidade}</div>
+                                <div className='info'>E-mail: {documento.documento.cabecalho.email}</div>
                                 <div className='info'>Telefone: {documento.documento.cabecalho.telefone}</div>
                                 <div className='info'>Cadatrado por {documento.documento.cabecalho.usuario_criador.name} em {new Date(documento.documento.cabecalho.criado_em).toLocaleDateString('pt-BR', formatOptions)}h</div>
                                 <div style={{'text-align': 'right', 'marginTop': '10px'}}>

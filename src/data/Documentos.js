@@ -66,7 +66,7 @@ class Documentos {
     }
 
     /* Xano Client: */
-    static createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, total, comissao, distancia, horas, valorKM, valorHora, totalInfoAdicionais) {
+    static createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, email, telefone, total, comissao, distancia, horas, valorKM, valorHora, totalInfoAdicionais) {
         return(
             {
                 "nome": nome,
@@ -76,6 +76,7 @@ class Documentos {
                 "cep": cep,
                 "cidade": cidade,
                 "telefone": telefone,
+                "email": email,
                 "total": total,
                 "comissao": parseFloat(comissao),
                 "informacoes_adicionais": this.createDocInfo(distancia, horas, valorKM, valorHora, totalInfoAdicionais)
@@ -126,9 +127,9 @@ class Documentos {
         parceiros,notaFiscal,  maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV,
         servicosExecutadosPV, testeRealizadosPV, distancia, horasTrabalhadas,  
         valorDoKM, valorDaHora, totalInstalacao, totalPV, totalDistancia, totalHorasTrabalhadas, totalDocumento,
-        comissao, valorProdutoPV, valorProdutoMontagem, usuario}) {
+        comissao, valorProdutoPV, valorProdutoMontagem, usuario, email}) {
 
-        let cabecalho = this.createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, telefone, totalDocumento, comissao, distancia, horasTrabalhadas, valorDoKM, valorDaHora, totalHorasTrabalhadas + totalDistancia)
+        let cabecalho = this.createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, email, telefone, totalDocumento, comissao, distancia, horasTrabalhadas, valorDoKM, valorDaHora, totalHorasTrabalhadas + totalDistancia)
         
         let documentosInstalacoes = []
   

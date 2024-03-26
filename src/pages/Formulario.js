@@ -38,6 +38,7 @@ class Formulario extends React.Component {
             cep: '',
             cidade: '',
             telefone: '',
+            email: '',
             maquinaMontagem: '',
             quantLinhasMontagem: 0,
             numeroMaquinaMontagem: '',
@@ -233,6 +234,7 @@ class Formulario extends React.Component {
                 <Input type='text' name='Endereço' value={this.state.endereco} onChange={(e) => this.setState({endereco: e.target.value})}/>
                 <InputComMascara name="CEP" mask="99999-999" value={this.state.cep} onChange={(e) => this.setState({cep: e.target.value})}/>
                 <Input type='text' name='Cidade' value={this.state.cidade} onChange={(e) => this.setState({cidade: e.target.value})}/>
+                <Input type='email' name='E-mail' value={this.state.email} onChange={(e) => this.setState({email: e.target.value})}/>
                 <InputComMascara name="Telefone" mask="(99) 99999-9999" value={this.state.telefone} onChange={(e) => this.setState({telefone: e.target.value})}/>
 
                 <div style={{display: 'block', width: '100%'}}>

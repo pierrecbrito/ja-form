@@ -33,7 +33,7 @@ class TabelaDocumentos extends React.Component {
             let documentosDePosVenda = result.data.documentos_pos_venda
             this.setState({documentos: documentosDeInstalacao.concat(documentosDePosVenda)})
 
-            this.props.setComissaoTotal(documentosDeInstalacao.reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
+            this.props.setComissaoTotal(documentosDeInstalacao.filter(d => d.documento.cabecalho.aprovado).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
             let cabecalhosContabilizados = []
             this.props.setTotalGeral(documentosDeInstalacao.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0) + documentosDePosVenda.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0))
         })
@@ -82,7 +82,7 @@ class TabelaDocumentos extends React.Component {
         //console.log(listaDeDocumentoFiltrados)
 
         //Atualiza valores gerais do relatório
-        this.props.setComissaoTotal(listaDeDocumentoFiltrados.filter(d => d.nota_fiscal != undefined).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
+        this.props.setComissaoTotal(listaDeDocumentoFiltrados.filter(d => d.nota_fiscal != undefined && d.documento.cabecalho.aprovado).reduce((a, b) => a + b.documento.cabecalho.comissao, 0))
         let cabecalhosContabilizados = []
         this.props.setTotalGeral(listaDeDocumentoFiltrados.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0) )
         
