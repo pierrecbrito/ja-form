@@ -85,7 +85,7 @@ class TabelaDocumentos extends React.Component {
             }
         })
 
-        this.props.setQuantidadeAtual(listaDeDocumentoFiltrados.length)
+        
         //console.log(listaDeDocumentoFiltrados)
 
         //Atualiza valores gerais do relatório
@@ -93,8 +93,10 @@ class TabelaDocumentos extends React.Component {
         let cabecalhosContabilizados = []
         this.props.setTotalGeral(listaDeDocumentoFiltrados.reduce((a, b) => { if(!cabecalhosContabilizados.includes(b.documento.cabecalho.id)) {cabecalhosContabilizados.push(b.documento.cabecalho.id); return  a + b.documento.cabecalho.total; } else { return a } }, 0) )
         
+        let listaComPaginacao = lista.filter((linha, index) => index < this.props.paginaAtual * 15 && index >= (this.props.paginaAtual == 1 ? 0 : (this.props.paginaAtual - 1) * 15))
+        this.props.setQuantidadeAtual(lista.length)
  
-        return lista.filter((linha, index) => index < this.props.paginaAtual * 15 && index >= (this.props.paginaAtual == 1 ? 0 : (this.props.paginaAtual - 1) * 15))
+        return listaComPaginacao
     }
 
 

@@ -7,8 +7,9 @@ function Pagination({quantidadeItens, paginaAtual, setPaginaAtual, itensPorPagin
     const [totalPagina, setTotalPagina] = useState(0)
 
     useEffect(() => {
-        console.log('totalPaginas', quantidadeItens/15 + (quantidadeItens % 15 == 0 ? 0 : 1))
-       setTotalPagina(quantidadeItens/15 + (quantidadeItens % 15 == 0 ? 0 : 1))
+        console.log('totalPaginas', quantidadeItens > 15 ? quantidadeItens/15 + (quantidadeItens % 15 == 0 ? 0 : 1) : 1)
+        setTotalPagina(quantidadeItens > 15 ? quantidadeItens/15 + (quantidadeItens % 15 == 0 ? 0 : 1) : 1)
+        console.log('pagina atual', paginaAtual)
     },[])
 
     const getPaginacao = () => {
