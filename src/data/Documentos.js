@@ -55,18 +55,29 @@ class Documentos {
 
 
 
-    static createDocInfo(distancia, horas,valorKM, valorHora, total) {
+    static createCobranca(distancia, horas,valorKM, valorHora, total, comissaoCobranca, maquinaCobranca, quantLinhasCobranca,
+        numeroMaquinaCobranca, maquinaNovaCobranca, faturadoRevendaCobranca, produtoCobranca, valorProdutoCobranca, servicosExecutadosCobranca, testeRealizadosCobranca) {
         return ({
             "distancia": parseFloat(distancia),
             "horas": parseFloat(horas),
             "valor_km": valorKM,
             "valor_hora": valorHora,
-            "total": total
+            "total": total,
+            "maquina": maquinaCobranca,
+            "numero_maquina": numeroMaquinaCobranca,
+            "quantidade_linhas": quantLinhasCobranca,
+            "maquina_nova": maquinaNovaCobranca, 
+            "faturado_revenda": faturadoRevendaCobranca,
+            "produto": produtoCobranca,//O valor do produto eu pego no back
+            "valor_produto": valorProdutoCobranca,
+            "servicos_executados": servicosExecutadosCobranca,
+            "testes_realizados": testeRealizadosCobranca,
+            "comissao": comissaoCobranca
         })
     }
 
     /* Xano Client: */
-    static createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, email, telefone, total, comissao, distancia, horas, valorKM, valorHora, totalInfoAdicionais) {
+    static createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, email, telefone, total, comissao) {
         return(
             {
                 "nome": nome,
@@ -78,14 +89,13 @@ class Documentos {
                 "telefone": telefone,
                 "email": email,
                 "total": total,
-                "comissao": parseFloat(comissao),
-                "informacoes_adicionais": this.createDocInfo(distancia, horas, valorKM, valorHora, totalInfoAdicionais)
+                "comissao": parseFloat(comissao)
             }
         )
     }
 
     /* Xano Client: */
-    static createDocInstalacao(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total,  parceiros) {
+    static createDocInstalacao(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total,  parceiros, comissaoInstalacao) {
         return (
             {
                 "maquina": maquina,
@@ -100,12 +110,13 @@ class Documentos {
                 "nota_fiscal": notaFiscal,
                 "valor_produto": valorProduto,
                 "total": total,
-                "parceiros": parceiros
+                "parceiros": parceiros,
+                "comissao": comissaoInstalacao
             }
         )
     }
 
-    static createDocPosVenda(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, valorProduto, total) {
+    static createDocPosVenda(maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, valorProduto, total, comissaoPV) {
         return (
             {
                 "maquina": maquina,
@@ -117,7 +128,8 @@ class Documentos {
                 "servicos_executados": servicosExecutados,
                 "testes_realizados": testesRealizados,
                 "valor_produto": valorProduto,
-                "total": total
+                "total": total,
+                "comissao": comissaoPV
             }
         )
     }
@@ -127,7 +139,8 @@ class Documentos {
         parceiros,notaFiscal,  maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV,
         servicosExecutadosPV, testeRealizadosPV, distancia, horasTrabalhadas,  
         valorDoKM, valorDaHora, totalInstalacao, totalPV, totalDistancia, totalHorasTrabalhadas, totalDocumento,
-        comissao, valorProdutoPV, valorProdutoMontagem, usuario, email}) {
+        comissao, valorProdutoPV, valorProdutoMontagem, usuario, email,  comissaoInstalacao,comissaoPV, totalCobranca, comissaoCobranca, maquinaCobranca, quantLinhasCobranca,
+        numeroMaquinaCobranca, maquinaNovaCobranca, faturadoRevendaCobranca, produtoCobranca, valorProdutoCobranca, servicosExecutadosCobranca, testeRealizadosCobranca}) {
 
         let cabecalho = this.createCabecalho(nome, cnpj, cpf, endereco, cep, cidade, email, telefone, totalDocumento, comissao, distancia, horasTrabalhadas, valorDoKM, valorDaHora, totalHorasTrabalhadas + totalDistancia)
         
@@ -138,20 +151,27 @@ class Documentos {
                 //maquina, quantLinhas, numeroMaquina, maquinaNova, faturadoRevenda, produto_id, servicosExecutados, testesRealizados, dono, notaFiscal, valorProduto, total, parceiros
                 documentosInstalacoes.push(this.createDocInstalacao(maquinaMontagem, quantLinhasMontagem, numeroMaquinaMontagem,
                     maquinaNovaMontagem, faturadoRevendaMontagem, produto, servicosExecutadosMontagem, testeRealizadosMontagem, parceiros[i], 
-                    notaFiscal, valorProdutoMontagem, totalInstalacao, parceiros))
+                    notaFiscal, valorProdutoMontagem, totalInstalacao, parceiros, comissaoInstalacao))
             }
         }
 
         let pv = null
         if(produtoPV != '' && parseFloat(totalPV) > 0) {
-           pv = this.createDocPosVenda(maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV, servicosExecutadosPV, testeRealizadosPV, valorProdutoPV, totalPV)
+           pv = this.createDocPosVenda(maquinaPV, quantLinhasPV, numeroMaquinaPV, maquinaNovaPV, faturadoRevendaPV, produtoPV, servicosExecutadosPV, testeRealizadosPV, valorProdutoPV, totalPV, comissaoPV)
         }
+
+        let cobranca = null
+        if(produtoCobranca != '' && parseFloat(totalCobranca) > 0) {
+            cobranca = this.createCobranca(distancia, horasTrabalhadas, valorDoKM, valorDaHora, totalDistancia + totalHorasTrabalhadas, comissaoCobranca
+                , maquinaCobranca, quantLinhasCobranca, numeroMaquinaCobranca, maquinaNovaCobranca, faturadoRevendaCobranca, produtoCobranca, valorProdutoCobranca, servicosExecutadosCobranca, testeRealizadosCobranca)
+         }
 
         const documentoCompleto = {
                 "documento": {
                     "cabecalho": cabecalho,
                     "documentos_instalacao": documentosInstalacoes,
-                    "documento_pos_venda": pv
+                    "documento_pos_venda": pv,
+                    "cobranca": cobranca
                 }
         }
 

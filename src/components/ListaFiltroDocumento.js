@@ -8,6 +8,7 @@ function ListaFiltroDocumento({name="Tipo de documento:", value, onChange}) {
         { value: 'Todos', label: 'Todos' },
         { value: 'Instalação', label: 'Instalação' },
         { value: 'PV', label: 'Pós-venda' },
+        { value: 'Cobranca', label: 'Cobrança' }
       ]
       
     

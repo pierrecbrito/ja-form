@@ -57,6 +57,14 @@ class Formulario extends React.Component {
             produtoPV: '',
             servicosExecutadosPV: '',
             testeRealizadosPV: '',
+            maquinaCobranca: '',
+            quantLinhasCobranca: 0,
+            numeroMaquinaCobranca: '',
+            maquinaNovaCobranca: false,
+            faturadoRevendaCobranca: '',
+            produtoCobranca: '',
+            servicosExecutadosCobranca: '',
+            testeRealizadosCobranca: '',
             distancia: 0,
             horasTrabalhadas: 0, 
             valorDoKM: 0,
@@ -74,11 +82,18 @@ class Formulario extends React.Component {
                 totalDistancia: this.getValorTotalDistancia(),
                 totalHorasTrabalhadas: this.getValorTotalHorasTrabalhadas(),
                 totalDocumento: this.getValorTotal(),
+                totalCobranca: this.getTotalCobranca(),
+                comissaoInstalacao: this.getComissaoInstalacao(),
+                comissaoPV: this.getComissaoPV(),
                 comissao: this.state.parceiros.length > 0 && this.getValorTotalInstalacao() > 0 ? (this.getComissao()/(this.state.parceiros.length+1)).toFixed(2) : this.getComissao().toFixed(2),
                 valorProdutoPV: this.getValorPVDe(this.state.produtoPV),
                 valorProdutoMontagem: this.getValorMontagemDe(this.state.produto),
+                valorProdutoCobranca:  this.getValorMontagemDe(this.state.produtoCobranca),
                 parceiros: this.state.parceiros.length > 0 ? [...this.state.allParceiros.filter(p => this.state.parceiros.includes(p.id)), this.state.usuario] : [this.state.usuario],
                 usuario: this.state.usuario,
+                comissaoInstalacao: this.getComissaoInstalacao(),
+                comissaoPV: this.getComissaoPV(),
+                comissaoCobranca: this.getComissaoCobranca()
             }
 
             Documentos.salvarDocumento(novoDocumento)
@@ -165,9 +180,25 @@ class Formulario extends React.Component {
     }
 
     getComissao() {
-        const horas = this.state.horasTrabalhadas * this.state.valorDaHora
-        const distancia = this.state.distancia * this.state.valorDoKM
-        return 0.10 * (horas + distancia)
+        return (this.getComissaoInstalacao() * (this.state.parceiros.length + 1)) + this.getComissaoPV() + this.getComissaoCobranca()
+    }
+
+    getComissaoInstalacao() {
+        let comissaoInstalacao = this.getValorTotalInstalacao() /  (this.state.parceiros.length + 1)
+        return comissaoInstalacao
+    }
+
+    getComissaoPV() {
+        let comissaoPV = this.getValorTotalPV() 
+        return comissaoPV
+    }
+
+    getTotalCobranca() {
+        return this.getValorTotalHorasTrabalhadas() + this.getValorTotalDistancia()
+    }
+
+    getComissaoCobranca() {
+        return this.getTotalCobranca() * 0.10
     }
 
     notificarDocumentoEnviado(){
@@ -240,7 +271,7 @@ class Formulario extends React.Component {
                 <div style={{display: 'block', width: '100%'}}>
                     <SelectSection idSecao='secao-instalacao' nomeSecao='Instalação'/>
                     <SelectSection idSecao='secao-pos-venda' nomeSecao='Pós-Venda'/>
-                    <SelectSection idSecao='secao-adicionais' nomeSecao='Informações adicionais'/>
+                    <SelectSection idSecao='secao-adicionais' nomeSecao='Cobrança'/>
                 </div>
 
                 <div id='secao-instalacao'>
@@ -255,7 +286,16 @@ class Formulario extends React.Component {
                     <Input type='text' name='Testes realizados' value={this.state.testeRealizadosMontagem} onChange={(e) => this.setState({testeRealizadosMontagem: e.target.value})}/>
                     <ListaDeParceiros name="Parceiros" options={this.state.allParceiros.map(parceiro => {return {value: parceiro.id, label: parceiro.name}})} value={this.state.parceiros} onChange={(e) => { this.setState({parceiros: e.map(p => p.value)});}} isOptionDisabled={() => this.state.parceiros.length >= 2}/>
                     <Input type='text' name='Nota Fiscal' value={this.state.notaFiscal} onChange={(e) => this.setState({notaFiscal: e.target.value})}/>
-                    <ValorSecao valor={this.getValorTotalInstalacao()}/>
+                    
+                    <div id='secao-total'>
+                        <span>Total:  </span>
+                        <ValorSecao valor={this.getValorTotalInstalacao()}/>
+                    </div>
+                    <div id='secao-total'>
+                        <span>Comissão:  </span>
+                        <ValorSecao valor={this.getComissaoInstalacao()}/>
+                    </div>
+                    
                 </div>
 
                 <div id='secao-pos-venda'>
@@ -268,15 +308,40 @@ class Formulario extends React.Component {
                     <ListaDeProduto name="Produtos" value={this.state.produtoPV} onChange={(e) => this.setState({produtoPV: e.value})} options={this.state.produtos.map(produto => {return {value: produto.id, label: produto.name}})}/>
                     <Input type='text' name='Serviços executados' value={this.state.servicosExecutadosPV} onChange={(e) => this.setState({servicosExecutadosPV: e.target.value})}/>
                     <Input type='text' name='Testes realizados' value={this.state.testeRealizadosPV} onChange={(e) => this.setState({testeRealizadosPV: e.target.value})}/>
-                    <ValorSecao valor={this.getValorTotalPV()}/>
+
+                    <div id='secao-total'>
+                        <span>Total:  </span>
+                        <ValorSecao valor={this.getValorTotalPV()}/>
+                    </div>
+                    <div id='secao-total'>
+                        <span>Comissão:  </span>
+                        <ValorSecao valor={this.getComissaoPV()}/>
+                    </div>
+                    
                 </div>
 
                 <div id='secao-adicionais'>
-                    <h3 style={{width: "100%"}}>Informações adicionais</h3>
+                    <h3 style={{width: "100%"}}>Cobrança</h3>
+                    <Input type='text' name='Máquina' value={this.state.maquinaCobranca} onChange={(e) => this.setState({maquinaCobranca: e.target.value})}/>
+                    <Input type='number' name='Quantidade de linha' value={this.state.quantLinhasCobranca} onChange={(e) => this.setState({quantLinhasCobranca: e.target.value})}/>
+                    <Input type='number' name='Número de máquina'  value={this.state.numeroMaquinaCobranca} onChange={(e) => this.setState({numeroMaquinaCobranca: e.target.value})}/>
+                    <InputRadio name="É Máquina nova" id="maquina-nova" value="Máquina nova" checked={this.state.maquinaNovaCobranca} onChange={(e) => this.setState({maquinaNovaCobranca: e.target.checked})}/>
+                    <Input type='text' name='Faturado pela revenda'  value={this.state.faturadoRevendaCobranca} onChange={(e) => this.setState({faturadoRevendaCobranca: e.target.value})}/>
+                    <ListaDeProduto name="Produtos" value={this.state.produtoCobranca} onChange={(e) => this.setState({produtoCobranca: e.value})} options={this.state.produtos.map(produto => {return {value: produto.id, label: produto.name}})}/>
+                    <Input type='text' name='Serviços executados' value={this.state.servicosExecutadosCobranca} onChange={(e) => this.setState({servicosExecutadosCobranca: e.target.value})}/>
+                    <Input type='text' name='Testes realizados' value={this.state.testeRealizadosCobranca} onChange={(e) => this.setState({testeRealizadosCobranca: e.target.value})}/>
+                    
                     <Input name="Distância percorrida (KM):" type="number" value={this.state.distancia} onChange={(e) => this.setState({distancia: e.target.value})}/>
-
                     <Input name="Horas implementadas:" type="number" value={this.state.horasTrabalhadas} onChange={(e) => this.setState({horasTrabalhadas: e.target.value})}/>
-                    <ValorSecao valor={this.getValorTotalHorasTrabalhadas() + this.getValorTotalDistancia()}/>
+                    
+                    <div id='secao-total'>
+                        <span>Total:  </span>
+                        <ValorSecao valor={this.getTotalCobranca()}/>
+                    </div>
+                    <div id='secao-total'>
+                        <span>Comissão:  </span>
+                        <ValorSecao valor={this.getComissaoCobranca()}/>
+                    </div>
                 </div>
 
 

@@ -8,6 +8,7 @@ import Documentos from '../data/Documentos'
 import CardInstalacao from './CardInstalacao';
 import LinhaInstalacao from './LinhaInstalacao';
 import LinhaPV from './LinhaPV';
+import LinhaCobranca from './LinhaCobranca';
 
 class TabelaDocumentos extends React.Component {
 
@@ -31,7 +32,8 @@ class TabelaDocumentos extends React.Component {
         Documentos.listarTodosDocumentos().then((result) => {
             let documentosDeInstalacao = result.data.documentos_instalacao
             let documentosDePosVenda = result.data.documentos_pos_venda
-            this.setState({documentos: documentosDeInstalacao.concat(documentosDePosVenda)})
+            let cobrancas = result.data.cobrancas
+            this.setState({documentos: documentosDeInstalacao.concat(documentosDePosVenda).concat(cobrancas)})
             
             this.props.setQuantidadeAtual(this.state.documentos.length)
 
@@ -67,6 +69,15 @@ class TabelaDocumentos extends React.Component {
                     if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
                         if(this.props.statusDocumentos == 'Qualquer' || (documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Deferido') || (!documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Indeferido')) {
                             lista.push(<LinhaInstalacao  documento={documento}/>)
+                            listaDeDocumentoFiltrados.push(documento)
+                        }
+                    }
+                }
+            } else if(documento.distancia != undefined && (this.props.tipoDocumento == 'Todos' || this.props.tipoDocumento == 'Cobranca')) {
+                if(documento.documento.cabecalho.usuario_criador.id == this.props.usuario || this.props.usuario == 'Todos') {
+                    if(this.props.dataInicial.getTime() <= new Date(documento.documento.cabecalho.criado_em).getTime() && this.props.dataFinal.getTime() >= new Date(documento.documento.cabecalho.criado_em).getTime()) {
+                        if(this.props.statusDocumentos == 'Qualquer' || (documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Deferido') || (!documento.documento.cabecalho.aprovado && this.props.statusDocumentos == 'Indeferido')) {
+                            lista.push(<LinhaCobranca documento={documento}/>)
                             listaDeDocumentoFiltrados.push(documento)
                         }
                     }

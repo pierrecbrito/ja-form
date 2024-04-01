@@ -6,6 +6,7 @@ import '../css/CardDocumento.css'
 import Expand2 from '../maximize-2.svg'
 import Documentos from '../data/Documentos';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router'
 
 const customStyles = {
     content: {
@@ -22,7 +23,8 @@ const customStyles = {
   };
 
 function LinhaInstalacao({documento}) {
-
+    const navigate = useNavigate()
+    
     const style = {
         'max-width': '300px',
         'border-radius': '15px',
@@ -131,7 +133,7 @@ function LinhaInstalacao({documento}) {
             <td className='coluna-documento'>{new Date(documento.documento.cabecalho.criado_em).toLocaleDateString('pt-BR', formatOptions)}h</td>
             <td className='coluna-documento'>Instalação</td>
             <td className='coluna-documento'>{documento.dono ? documento.dono.name :  documento.documento.cabecalho.usuario_criador.name}</td>
-            <td className='coluna-documento'>{documento.documento.cabecalho.comissao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
+            <td className='coluna-documento'>{documento.documento.comissao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
             <td className='coluna-documento'><img src={Expand2} style={{top: '15px', right: '15px', width: '1em', 'cursor': 'pointer'}} onClick={() => {setShowModal(true)}}/></td>
 
             <ReactModal 
@@ -142,7 +144,7 @@ function LinhaInstalacao({documento}) {
             >
                 <header className='cabecalho_modal'>
                     Documento
-                    <span className='btn-fechar-modal' onClick={() => {setShowModal(false); if(reloadNecessary) window.location.reload();}}>X</span>
+                    <span className='btn-fechar-modal' onClick={() => {setShowModal(false); if(reloadNecessary) navigate(0);}}>X</span>
                 </header>
                 <main className='body_modal' style={{maxHeight: '600px',overflow:'scroll'}}>
                     <div id="secoes-container">
@@ -161,19 +163,6 @@ function LinhaInstalacao({documento}) {
                                 <div className='info'>Cadatrado por {documento.documento.cabecalho.usuario_criador.name} em {new Date(documento.documento.cabecalho.criado_em).toLocaleDateString('pt-BR', formatOptions)}h</div>
                                 <div style={{'text-align': 'right', 'marginTop': '10px'}}>
                                     <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total geral: R$ {documento.documento.cabecalho.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='secao' style={{background: 'rgba(0, 99, 65, 0.3)', borderRadius: '15px', padding: '15px', marginTop: '10px'}}>
-                            <h4 style={{'text-align': 'center'}}>Dados de serviços</h4>
-                            <div className='secao-body'>
-                                <div className='info'>Deslocamento: {documento.documento.cabecalho.info_adicionais.distancia}km</div>
-                                <div className='info'>Horas trabalhadas: {documento.documento.cabecalho.info_adicionais.horas}h</div>
-                                <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: {documento.documento.cabecalho.info_adicionais.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
-                                </div>
-                                <div style={{'text-align': 'right', 'marginTop': '10px'}}>
-                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão: {documento.documento.cabecalho.comissao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
                                 </div>
                             </div>
                         </div>

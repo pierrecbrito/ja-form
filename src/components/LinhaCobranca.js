@@ -26,7 +26,7 @@ const customStyles = {
     },
   };
 
-function LinhaPV({documento}) {
+function LinhaCobranca({documento}) {
     const navigate = useNavigate()
 
     const style = {
@@ -135,7 +135,7 @@ function LinhaPV({documento}) {
             <td className='coluna-documento'  style={{'padding': '5px'}}>{statusReadOnly()}</td>
             <td className='coluna-documento' style={{'cursor': 'pointer'}}>{documento.documento.cabecalho.nome}</td>
             <td className='coluna-documento'>{new Date(documento.documento.cabecalho.criado_em).toLocaleDateString('pt-BR', formatOptions)}h</td>
-            <td className='coluna-documento'>Pós-venda</td>
+            <td className='coluna-documento'>Cobrança</td>
             <td className='coluna-documento'>{documento.documento.cabecalho.usuario_criador.name}</td>
             <td className='coluna-documento'>{documento.documento.comissao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
             <td className='coluna-documento'><img src={Expand3} style={{top: '15px', right: '15px', width: '1em', 'cursor': 'pointer'}} onClick={() => {setShowModal(true)}}/></td>
@@ -170,12 +170,16 @@ function LinhaPV({documento}) {
                                 </div>
                             </div>
                         </div>
+                      
                         <div className='secao' style={{ borderRadius: '15px', padding: '15px', marginTop: '10px', border:'1px solid gray'}}>
                             <h4 style={{'text-align': 'center'}}>Pós-venda</h4>
                             <div style={{'text-align': 'center', 'font-size': '0.9rem'}}>
                                     <span style={{'background-color': 'rgba(0, 99, 65, 0.3)','padding': '10px', 'border-radius': '20rem', 'display': 'inline-block'}}>Responsável: {documento.documento.cabecalho.usuario_criador.name}</span>
                             </div>
                             <div className='secao-body'>   
+                                <div className='info'>Deslocamento: {documento.distancia}km</div>
+                                <div className='info'>Horas trabalhadas: {documento.horas}h</div>
+
                                 <div className='info'>Máquina: {documento.documento.maquina}</div>
                                 <div className='info'>Linhas: {documento.documento.quantidade_linhas}</div>
                                 <div className='info'>Número de máquina: {documento.documento.numero_maquina}</div>
@@ -184,6 +188,13 @@ function LinhaPV({documento}) {
                                 <div className='info'>Produto: {documento.documento.produto.name}</div>
                                 <div className='info'>Serviços executados: {documento.documento.servicos_executados}</div>
                                 <div className='info'>Testes realizados: {documento.documento.testes_realizados}</div>
+
+                                <div style={{'text-align': 'right', 'marginTop': '10px'}}>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Total: {documento.documento.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                                </div>
+                                <div style={{'text-align': 'right', 'marginTop': '10px'}}>
+                                    <span style={{'border-left':'5px solid #006341', 'background-color': 'rgba(0, 99, 65, 0.3)', 'padding': '10px', 'font-size': '0.8rem', 'display': 'inline-block'}}>Comissão: {documento.documento.comissao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</span>
+                                </div>
                             </div>
                         </div>
                         <div style={{'text-align': 'right', 'marginTop': '10px'}}>
@@ -197,4 +208,4 @@ function LinhaPV({documento}) {
     );
 }
 
-export default LinhaPV;
+export default LinhaCobranca;

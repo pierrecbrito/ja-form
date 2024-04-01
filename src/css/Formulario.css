@@ -36,6 +36,10 @@
     margin-left: 1em;
 }
 
+#secao-instalacao #secao-total, #secao-pos-venda #secao-total, #secao-adicionais #secao-total {
+    
+}
+
 @media only screen and (max-width: 600px) {
     .formulario-documento .input-container {
         width: 98%;
