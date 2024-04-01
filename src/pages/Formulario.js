@@ -176,7 +176,8 @@ class Formulario extends React.Component {
         const pv = this.getValorPVDe(this.state.produtoPV) * this.state.quantLinhasPV
         const distancia = this.state.distancia * this.state.valorDoKM
         const horas = this.state.horasTrabalhadas * this.state.valorDaHora
-        return instalacao + pv + distancia + horas
+        const cobranca = this.getTotalCobranca()
+        return instalacao + pv + distancia + horas + cobranca
     }
 
     getComissao() {
